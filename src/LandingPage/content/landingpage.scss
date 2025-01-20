@@ -104,10 +104,18 @@
     gap:var(--ctrlspace);
     flex-direction: row;
     align-items: center;
+
+    .movegrip
+    {
+      cursor:grab;
+      svg circle { fill:currentColor; }
+    }
   }
 
   .group
   {
+    position: relative;
+    margin-bottom: var(--gapspace);
     
     .titlebar
     {
@@ -123,7 +131,7 @@
         margin-top: -4px; //temporary Bugfix as text is not in line with tools
         cursor:pointer;
         border:1px solid transparent;
-        padding:var(--gapspace-s);
+        padding:0; //var(--gapspace-s);
 
         border-radius: var(--corner);
         &:hover
@@ -132,7 +140,7 @@
         }
       }
 
-      @at-root body.is-dragging // is currently in dragging operation
+      @at-root body.is-dragging // is currently in card-dragging operation
       {
         .group-label:hover //dragging over group label = show bottom line drop indicator
         { 
@@ -144,6 +152,52 @@
 
       .tools //specific toolbar in titlebar of group
       {        
+      }      
+    }
+
+    //Drag-drop for the group 
+    @at-root body:not(.is-dragging) //not in dragging operation
+    {
+      .dragbefore, .dragafter //hide the insertion targets
+      {
+        //display: none;
+        pointer-events: none;
+      }
+    }
+
+    @at-root body.is-dragging-group // is currently in dragging operation
+    {
+      .dragged-item //for the dragged item itself, indicate visually, hide the hotspots/lock mouse interaction
+      {
+        opacity:0.5;
+        outline:1px dashed var(--vscode-notebook-cellInsertionIndicator) !important;
+        pointer-events: none;            
+      }
+    
+      &:hover
+      {
+        .dragup, .dragdown //mouse over drop zone -> draw insertion mark (via side-border)
+        {
+          width: 100%; 
+          height: calc( 50% + var(--gapspace-s) );
+          position: absolute;
+          z-index: 1;
+          &:hover {border-color: var(--vscode-notebook-cellInsertionIndicator);}
+        }
+        .dragup
+        {              
+          border-top: calc(  0.25 * var(--gapspace) ) solid transparent;
+          margin-top: calc( -0.625 * var(--gapspace) );
+          // background-color: rgba(255, 166, 0, 0.438);
+        }
+
+        .dragdown
+        {
+          bottom:0;
+          border-bottom: calc(  0.25 * var(--gapspace) ) solid transparent;
+          margin-bottom: calc( -0.625 * var(--gapspace) );
+          // background-color: rgba(0, 255, 255, 0.479);
+        }
       }
     }
 
@@ -180,11 +234,7 @@
         {          
           margin: var(--ctrlspace);
 
-          .movegrip
-          {
-            cursor:grab;
-            svg circle { fill:currentColor; }
-          }
+          //.movegrip is now generalized above ⬆
         }
 
         .textblock
@@ -277,7 +327,8 @@
   }
 }
 
-body.is-dragging *
+//ensure drag cursor is visible everywhere while dragging
+body.is-dragging *, body.is-dragging-group *
 {
   cursor: grabbing !important;
   cursor: -moz-grabbing !important;

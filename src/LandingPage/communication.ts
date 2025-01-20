@@ -177,20 +177,41 @@ interface MessageToWebview
       case 'move': // {guid:move, guid2:relativeTo, pos:beforeOrAfterGuid2}
         let foundDrag=findFirst(message.guid, sharedModel); // item to move
         let foundDrop=findFirst(message.guid2, sharedModel); //item to move relative to
-        if (foundDrag!==undefined && foundDrop!==undefined)
+        if (foundDrag && foundDrop)
         {
-          let fromPos = foundDrag?.ownerGroup?.projects.indexOf(foundDrag.target);
-          foundDrag?.ownerGroup?.projects.splice(fromPos!,1); //remove from old parent
+          let dragIs=foundDrag.ownerGroup?'project':'group';
+          let dropIs=foundDrop.ownerGroup?'project':'group';
 
-          if (!(foundDrop?.ownerGroup)) //drop to group = make child
+          if (dragIs==='group')
           {
-            (foundDrop?.target as LandingPageGroup).projects.push(foundDrag!.target);
+            let fromPos = foundDrag.model.groups.indexOf(foundDrag.target as LandingPageGroup);
+            foundDrag.model.groups.splice(fromPos!,1); //remove from old parent
+
+            if (dropIs==='project') // -> not possible
+            {
+              console.error('cannot drop group on project!');
+            }
+            else //if (dropIs==='group') // -> put group as sibling of other group
+            {
+              let toPos = foundDrop.model.groups.indexOf(foundDrop.target as LandingPageGroup);
+              foundDrop.model.groups.splice(toPos!+(message.pos==='after'?1:0),0,foundDrag.target as LandingPageGroup);
+            }           
           }
-          else //drop to project = make sibling 
+          else //if (dragIs==='project')
           {
-            let toPos = foundDrop?.ownerGroup?.projects.indexOf(foundDrop.target);
-            foundDrop?.ownerGroup?.projects.splice(toPos!+(message.pos==='after'?1:0),0,foundDrag!.target);
-          }
+            let fromPos = foundDrag.ownerGroup!.projects.indexOf(foundDrag.target);
+            foundDrag.ownerGroup!.projects.splice(fromPos!,1); //remove from old parent
+
+            if (dropIs==='project') // -> put project as sibling of other project
+            {
+              let toPos = foundDrop?.ownerGroup?.projects.indexOf(foundDrop.target);
+              foundDrop?.ownerGroup?.projects.splice(toPos!+(message.pos==='after'?1:0),0,foundDrag!.target);
+            }
+            else //if (dropIs==='group') // -> add project as child of group
+            {
+              (foundDrop.target as LandingPageGroup).projects.push(foundDrag!.target);
+            }
+          }          
           saveModel(sharedModel);
         }
         break;

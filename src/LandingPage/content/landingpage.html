@@ -17,13 +17,17 @@
     </div> -->
     <div class="group col">
       <div data-prototype data-guid="" class="group">
+        <div class="dragup"></div>
+        <div class="dragdown"></div>
         <div class="titlebar">
           <!--<div class="tools">
             <button title="Collapse/Expand">${eye} </button>
           </div>-->
-          <div title="Change order" class="movegrip" onmousedown="startdrag(event)">${gripVertical}</div>
+          <div class="tools">
+            <div title="Change order" class="movegrip" onmousedown="startdrag(event)">${gripVertical}</div>
+          </div>
           <h1 class="group-label" data-field="group.label" onclick="rename(event)" title="Click to rename">Group label</h1>
-          <div class="tools">            
+          <div class="tools">          
             <!-- <button title="Layout as Grid">${layoutGrid} </button>
             <button title="Layout as List">${layoutList} </button> -->
             <button title="Add bookmark to file or workspace" onclick="createBookmark(false)">${plus} </button>
@@ -174,54 +178,58 @@
 
       let draggingGUID=undefined;
       let draggingEl=undefined;
+      let draggingGroup=false;
       function startdrag(event)
       {
         let guidProvider = event.target.closest('[data-guid]');
         if (!guidProvider) return;
-        document.body.classList.add('is-dragging');
+
+        draggingGroup = guidProvider.classList.contains('group');
+        document.body.classList.add(draggingGroup?'is-dragging-group':'is-dragging');
         draggingEl=guidProvider;
         draggingEl.classList.add('dragged-item');
         draggingGUID=guidProvider.dataset['guid'];
-        // console.log(`start drag of ${draggingGUID}`,event);
+        console.log(`start drag of ${draggingGUID}`,event);
       }
 
       function stopdrag(event)
       {
-        document.body.classList.remove('is-dragging');
-        // console.log('stop drag',event);
+        document.body.classList.remove('is-dragging','is-dragging-group');
+        console.log('stop drag',event);
 
-        if (draggingGUID===undefined)return;
-        if(event.target.classList.contains('dragbefore'))
+        if (draggingGUID===undefined)return;        
         {
-          let dropGuidProvider = event.target.closest('[data-guid]');
-          if (!dropGuidProvider) return;
-          // console.log(`move ${draggingGUID} BEFORE ${dropGuidProvider.dataset['guid']}`);
-          vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'before'});
-          dropGuidProvider.insertAdjacentElement('beforebegin', draggingEl);
-        }
-        else if(event.target.classList.contains('dragafter'))
-        {
-          let dropGuidProvider = event.target.closest('[data-guid]');
-          if (!dropGuidProvider) return;
-          // console.log(`move ${draggingGUID} AFTER ${dropGuidProvider.dataset['guid']}`);
-          vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'after'});
-          dropGuidProvider.insertAdjacentElement('afterend', draggingEl);
-        }
-        else if (event.target.classList.contains('group-label')) //drop on group, i.e. to allow dropping in empty groups
-        {
-          let dropGuidProvider = event.target.closest('[data-guid]');
-          if (!dropGuidProvider) return;
-          // console.log(`move ${draggingGUID} AFTER ${dropGuidProvider.dataset['guid']}`);
-          vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'<irrelvant>'});
-          dropGuidProvider.querySelector('.projects')?.appendChild(draggingEl);
+          if(event.target.classList.contains('dragbefore') || event.target.classList.contains('dragup'))
+          {
+            let dropGuidProvider = event.target.closest('[data-guid]');
+            if (!dropGuidProvider) return;
+            // console.log(`move ${draggingGUID} BEFORE ${dropGuidProvider.dataset['guid']}`);
+            vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'before'});
+            dropGuidProvider.insertAdjacentElement('beforebegin', draggingEl);
+          }
+          else if(event.target.classList.contains('dragafter') || event.target.classList.contains('dragdown'))
+          {
+            let dropGuidProvider = event.target.closest('[data-guid]');
+            if (!dropGuidProvider) return;
+            // console.log(`move ${draggingGUID} AFTER ${dropGuidProvider.dataset['guid']}`);
+            vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'after'});
+            dropGuidProvider.insertAdjacentElement('afterend', draggingEl);
+          }
+          else if (event.target.classList.contains('group-label')) //drop on group, i.e. to allow dropping in empty groups
+          {
+            let dropGuidProvider = event.target.closest('[data-guid]');
+            if (!dropGuidProvider) return;
+            // console.log(`move ${draggingGUID} AFTER ${dropGuidProvider.dataset['guid']}`);
+            vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'<irrelvant>'});
+            dropGuidProvider.querySelector('.projects')?.appendChild(draggingEl);
+          }
         }
         
         draggingGUID=undefined;
         draggingEl.classList.remove('dragged-item');
         draggingEl=null;
+        draggingGroup=false;
       }
-
-      //TODO: dragdrop groups
 
 
       let model/*:LandingPageModel*/={};

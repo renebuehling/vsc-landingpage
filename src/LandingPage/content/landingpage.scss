@@ -1,0 +1,285 @@
+
+
+.landingpage
+{
+  &.debug
+  {
+    border:1px solid fuchsia;
+
+    .group
+    {
+      .projects
+      {
+        border:1px solid yellow;
+
+        .project
+        {
+          border:1px solid green;
+        }
+      }
+
+    }
+    div[data-prototype]
+    {
+      opacity: 0.3;
+      background-color: rgba(255, 217, 0, 0.514);
+      display: block;
+    }
+  }
+
+  div[data-prototype]
+  {
+    display: none !important;
+  }
+
+
+
+
+
+  --gapspace:16px;    // gaps between layout areas
+  --gapspace-s:8px;   // smaller gaps between layout areas
+  --ctrlspace:2px;    // small spacing for padding/margins between i.e. icon and label
+  --corner:4px;       //borderradius
+
+  user-select: none;
+  .col
+  {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gapspace);
+    padding-top: var(--gapspace);
+    padding-bottom: var(--gapspace);
+  }
+
+  .lucide
+  {
+    width: 19px;
+    height: auto;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  button
+  {
+    display: flex;
+    padding: var(--ctrlspace);
+    justify-content: center;
+    align-items: center;
+
+    cursor:pointer;
+
+    color: var(--vscode-icon-foreground);
+    background-color: transparent;
+    &:hover { background-color: var(--vscode-toolbar-hoverBackground); }
+
+    border: none;
+    border-radius: var(--corner);
+
+    span
+    {
+      margin-left: var(--ctrlspace);
+      margin-right: var(--ctrlspace);
+      padding-left: var(--ctrlspace);
+      padding-right: var(--ctrlspace);
+    }
+  }
+
+  space, .space
+  {
+    flex-grow:1;
+  }
+
+  .muted-hint
+  {
+    opacity: 0.5;
+    font-style: italic;
+  }
+
+  .tools //for all toolbars
+  {
+    display: flex;
+    gap:var(--ctrlspace);
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .group
+  {
+    
+    .titlebar
+    {
+      display: flex;
+      gap:var(--gapspace-s);
+      margin-bottom:var(--gapspace);
+
+      .group-label //h1
+      {
+        // color:cornflowerblue;
+        font-weight: 400;
+        margin:0;
+        margin-top: -4px; //temporary Bugfix as text is not in line with tools
+        cursor:pointer;
+        border:1px solid transparent;
+        padding:var(--gapspace-s);
+
+        border-radius: var(--corner);
+        &:hover
+        {          
+          border-color: var(--vscode-input-border);         
+        }
+      }
+
+      @at-root body.is-dragging // is currently in dragging operation
+      {
+        .group-label:hover //dragging over group label = show bottom line drop indicator
+        { 
+          border:none !important; 
+          border-radius: 0 !important; 
+          border-bottom: calc( 0.25 * var(--gapspace) ) solid var(--vscode-notebook-cellInsertionIndicator) !important; 
+        }
+      }
+
+      .tools //specific toolbar in titlebar of group
+      {        
+      }
+    }
+
+
+    .projects
+    {
+      &.grid
+      {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: flex-start;
+        gap: var(--gapspace);
+      }
+
+      .project //card
+      {        
+        width: 150px;
+        height: 120px;
+        outline: 1px solid var(--vscode-editorWidget-border);
+        box-shadow: 0 2px 5px 0 #9393932e;
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--corner);
+        position: relative;
+
+        &:not(:hover)
+        {
+          .tools {visibility: hidden;}
+        }
+
+        .tools //specific toolbar in project card
+        {          
+          margin: var(--ctrlspace);
+
+          .movegrip
+          {
+            cursor:grab;
+            svg circle { fill:currentColor; }
+          }
+        }
+
+        .textblock
+        {
+          margin: var(--ctrlspace);
+          padding: var(--ctrlspace) calc( var(--ctrlspace) * 2 );
+          
+          flex-grow: 1;
+          display: flex;
+          align-items: flex-end;
+
+          overflow:hidden;
+          //font-size:large;
+          cursor: pointer;
+
+          [data-field="project.label"]
+          {
+            // max-height: 50%;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+        }
+
+        .pictoral
+        {
+          position: absolute;
+          //background: yellow;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: -1;
+
+          .icon
+          {
+            scale: 2.4;
+            opacity: .3;
+            transform: translateY(-2px);
+          }
+        }
+        @at-root body:not(.is-dragging) //not in dragging operation
+        {
+          .dragbefore, .dragafter //hide the insertion targets
+          {
+            display: none;
+          }
+        }
+
+        @at-root body.is-dragging // is currently in dragging operation
+        {
+          .dragged-item //for the dragged item itself, indicate visually, hide the hotspots/lock mouse interaction
+          {
+            opacity:0.5;
+            outline:1px dashed var(--vscode-notebook-cellInsertionIndicator) !important;
+            pointer-events: none;            
+          }
+        
+          &:hover
+          {
+            .dragbefore, .dragafter //mouse over drop zone -> draw insertion mark (via side-border)
+            {
+              width: calc( 50% + var(--gapspace-s) );
+              height: 100%;
+              position: absolute;
+              z-index: 1;
+              &:hover {border-color: var(--vscode-notebook-cellInsertionIndicator);}
+            }
+            .dragbefore
+            {              
+              border-left: calc(  0.25 * var(--gapspace) ) solid transparent;
+              margin-left: calc( -0.625 * var(--gapspace) );
+            }
+
+            .dragafter
+            {
+              right:0;
+              border-right: calc(  0.25 * var(--gapspace) ) solid transparent;
+              margin-right: calc( -0.625 * var(--gapspace) );
+            }
+          }
+        }
+
+      }
+    }
+
+  }
+}
+
+body.is-dragging *
+{
+  cursor: grabbing !important;
+  cursor: -moz-grabbing !important;
+  cursor: -webkit-grabbing !important;    
+}

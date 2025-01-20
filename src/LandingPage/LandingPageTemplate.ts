@@ -1,11 +1,11 @@
+import { icons } from './iconography';
+
 //@ts-ignore webpack loading syntax not recongized
 import landingpageHtml from '!!raw-loader!./content/landingpage.html';
 //@ts-ignore webpack loading syntax not recongized
 import landingpageCss from '!!raw-loader!./content/dist/landingpage.min.css';
 // //@ts-ignore webpack loading syntax not recongized
 // import landingpageJs from '!!raw-loader!./content/landingpage.js';
-
-import { icons } from './iconography';
 
 
 /**

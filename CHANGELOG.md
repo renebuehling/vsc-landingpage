@@ -17,3 +17,4 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Rename groups or bookmarks
 - Drag and drop organisation of bookmarks within same or across groups
 - Store and restore bookmarks in extension's globalStore
+- Using [Lucide](https://lucide.dev/icons/folder-plus) icons

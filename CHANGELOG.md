@@ -20,4 +20,4 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Store and restore bookmarks in extension's globalStore
 - Using [Lucide](https://lucide.dev/icons/folder-plus) icons
 
-//TODO: color options; remove menu - and/or - cleanup add-command into popup; display of vsc-mru documents; documentation; beta testing; future: list layout;
+//TODO: color options; remove menu; display of vsc-mru documents; documentation; beta testing; future: list layout;

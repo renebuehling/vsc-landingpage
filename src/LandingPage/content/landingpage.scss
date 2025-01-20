@@ -151,8 +151,12 @@
       }
 
       .tools //specific toolbar in titlebar of group
-      {        
+      {
       }      
+      &:not(:hover)
+      {
+        .tools.hover-only {visibility: hidden;}
+      }
     }
 
     //Drag-drop for the group 

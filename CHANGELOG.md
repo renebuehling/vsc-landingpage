@@ -16,5 +16,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Open linked path on click
 - Rename groups or bookmarks
 - Drag and drop organisation of bookmarks within same or across groups
+- Drag and drop sorting of groups
 - Store and restore bookmarks in extension's globalStore
 - Using [Lucide](https://lucide.dev/icons/folder-plus) icons
+
+//TODO: color options; remove menu - and/or - cleanup add-command into popup; display of vsc-mru documents; documentation; beta testing; future: list layout;

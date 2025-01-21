@@ -24,6 +24,12 @@ export function activate(context: vscode.ExtensionContext)
 	// });
 	// context.subscriptions.push(disposable);
 
+	const disposable = vscode.commands.registerCommand('vsc-landingpage.setColor', (...args) => {
+		console.log('💧 Set Color',args);
+		vscode.window.showWarningMessage('💧 Set color');
+	});
+	context.subscriptions.push(disposable);
+
 	const cmdShowWelcomePage = vscode.commands.registerCommand('vsc-landingpage.showWelcomePage', async() => 
 	{
 		try 

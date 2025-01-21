@@ -5,16 +5,21 @@
 
   </head>
   <body class="landingpage col" data-vscode-context='{"preventDefaultContextMenuItems": true }' onmouseup="stopdrag(event)">
-    <!-- <div class="modal">
-      <div class="dialog col">
+    <div class="modal" onclick="modalHide()">
+      <!-- <div class="dialog col">
         <div class="text">
           <div>Hello World</div>
         </div>
         <div class="actions">
           <button>Ok</button>
+        </div> -->
+        <div class="palette">
+          <div class="red" onclick="modalPaletteClick(event)"></div>
+          <div class="orange" onclick="modalPaletteClick(event)"></div>
+          <div class="yellow" onclick="modalPaletteClick(event)"></div>
         </div>
       </div>
-    </div> -->
+    </div>
     <div class="group col">
       <div data-prototype data-guid="" class="group">
         <div class="dragup"></div>
@@ -39,7 +44,7 @@
           </div>
         </div>
         <div class="projects grid">
-          <div data-prototype data-guid="" class="project"  data-vscode-context='{"webviewSection": "card", "preventDefaultContextMenuItems": true}'>
+          <div data-prototype data-guid="" class="project"  data-vscode-context='{"webviewSection": "card", "preventDefaultContextMenuItems": true}' oncontextmenu="modalPaletteShow(event)">
             <div class="dragbefore"></div>
             <div class="dragafter"></div>
             <div class="pictoral">
@@ -229,6 +234,23 @@
         draggingEl.classList.remove('dragged-item');
         draggingEl=null;
         draggingGroup=false;
+      }
+
+
+      function modalHide()
+      {
+        document.querySelector('.modal').classList.add('hidden');
+      }
+      function modalPaletteShow(event)
+      {
+        document.querySelector('.modal').classList.remove('hidden');
+        let div = document.querySelector('.modal .palette');
+        div.style.left = (event.clientX) + 'px';
+        div.style.top = (event.clientY) + 'px';
+      }
+      function modalPaletteClick(event)
+      {
+        //FIXME: next: implement color pick+application
       }
 
 

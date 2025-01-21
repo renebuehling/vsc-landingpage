@@ -17,17 +17,7 @@
         "command": "vsc-landingpage.showWelcomePage",
         "title": "Show Landing Page"
       }
-    ],
-    "menus": {
-      "webview/context": [
-        {
-          "when": "webviewId == 'vsc-landingpage' && webviewSection == 'card'",
-          "command": "vsc-landingpage.showWelcomePage",
-          "group": "navigation",
-          "title": "Card! 💎"
-        }
-      ]
-    }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

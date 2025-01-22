@@ -5,7 +5,7 @@
 
   </head>
   <body class="landingpage col" data-vscode-context='{"preventDefaultContextMenuItems": true }' onmouseup="stopdrag(event)">
-    <div class="modal" onclick="modalHide()">
+    <div class="modal hidden" onpointerup="modalHide(event)">
       <!-- <div class="dialog col">
         <div class="text">
           <div>Hello World</div>
@@ -14,9 +14,21 @@
           <button>Ok</button>
         </div> -->
         <div class="palette">
-          <div class="red" onclick="modalPaletteClick(event)"></div>
-          <div class="orange" onclick="modalPaletteClick(event)"></div>
-          <div class="yellow" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="red" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="orange" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="yellow" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="green" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="teal" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="pink" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="purple" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="blue" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="cyan" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="gray" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="silver" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="brown" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="white" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="black" onclick="modalPaletteClick(event)"></div>
+          <div data-shade="" onclick="modalPaletteClick(event)"></div>
         </div>
       </div>
     </div>
@@ -237,12 +249,20 @@
       }
 
 
-      function modalHide()
+      function modalHide(event)
       {
+        // console.log('modal hide',event);
         document.querySelector('.modal').classList.add('hidden');
       }
+
+      let contextCard = undefined;
+
       function modalPaletteShow(event)
       {
+        contextCard = event.target.closest('[data-guid]');
+        // console.log('modal palette SHOW',event,!contextCard?'NOT ContextCard':'HAS ContextCard');
+        if (!contextCard) return;
+
         document.querySelector('.modal').classList.remove('hidden');
         let div = document.querySelector('.modal .palette');
         div.style.left = (event.clientX) + 'px';
@@ -250,7 +270,15 @@
       }
       function modalPaletteClick(event)
       {
-        //FIXME: next: implement color pick+application
+        // console.log('modal palette click',event,!contextCard?'NOT ContextCard':'HAS ContextCard');
+        if (!contextCard) return;
+
+        let pickedShade=event.target.dataset['shade'];
+        contextCard.dataset['shade']=pickedShade;
+        vscode.postMessage({command:'patch',guid:contextCard.dataset['guid'], field:'shade', value:pickedShade});
+
+        // console.log("🔴 shade",contextCard.dataset['shade'],'into', event.target.dataset['shade']);
+        contextCard=null;
       }
 
 
@@ -296,10 +324,9 @@
                     elGUIDs.push(elProject);
                   } 
 
-                  //--- update/sync html and data model                  
+                  //--- update/sync html and data model        
                   for(const labeled of elProject.querySelectorAll('[data-field="project.label"]'))
                     labeled.innerText = landingPageProject.label;
-
                   
                   let svg = typesvg_question;
                   if (landingPageProject.icon=='folder') svg = typesvg_folder;
@@ -308,6 +335,8 @@
 
                   for(const labeled of elProject.querySelectorAll('[data-field="project.typesvg"]'))
                     labeled.innerHTML = svg;
+
+                  elProject.dataset['shade']=landingPageProject.shade;
 
                 }   
               }catch(error) {console.error(error);}              

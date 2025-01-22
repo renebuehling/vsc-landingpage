@@ -5,7 +5,7 @@ import { group } from 'console';
 
 interface MessageFromWebview
 {
-	command:'documentReady'|'rename'|'createBookmark'|'createGroup'|'remove'|'open'|'move';
+	command:'documentReady'|'rename'|'createBookmark'|'createGroup'|'remove'|'open'|'move'|'patch';
 
 	//text?:string;
   /** GUID value of model fragment this command refers to. */
@@ -15,8 +15,15 @@ interface MessageFromWebview
   /** If true, comman `remove` will not show a confirmation dialog. */
   dontAsk?:boolean;
 
+  /** For command 'move' the GUID of the element the dragged element (GUID) is placed relative to. */
   guid2?:string;
+  /** For command 'move' the insertion relation to drop target (GUID2). */
   pos?:'before'|'after';
+
+  /** For command 'patch' the name of the field to update. */
+  field?:'shade';
+  /** For command 'patch' the new value to assign to the field. */
+  value?:any;
 }
 
 interface MessageToWebview
@@ -213,6 +220,19 @@ interface MessageToWebview
             }
           }          
           saveModel(sharedModel);
+        }
+        break;
+      case 'patch':
+        let found = findFirst(message.guid,sharedModel);
+        if (!found) {vscode.window.showWarningMessage(`GroupOrProject not found: ${message.guid}`);return;}
+        if (message.field==='shade')
+        {
+          (found.target as LandingPageProject).shade=message.value;
+          saveModel(sharedModel);
+        }
+        else
+        {
+          console.warn(`Patch field not supported for key ${message.field}.`);
         }
         break;
       default:

@@ -35,6 +35,8 @@ export interface LandingPageProject extends LandingPageItem
   path?:string;
   /** Hint to icon to display, usually initialized when setting path. */
   icon?:'folder'|'workspace'; // omitted = 'file'
+  /** Color theming for this bookmark. */
+  shade?:'red'|'orange'|'yellow'|'green'|'teal'|'pink'|'purple'|'blue'|'cyan'|'gray'|'silver'|'brown'|'white'|'black';
 }
 
 

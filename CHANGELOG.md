@@ -19,5 +19,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Drag and drop sorting of groups
 - Store and restore bookmarks in extension's globalStore
 - Using [Lucide](https://lucide.dev/icons/folder-plus) icons
+- Color picker for cards
 
-//TODO: color options; remove menu; display of vsc-mru documents; documentation; beta testing; future: list layout;
+//TODO: display of vsc-mru documents; documentation; beta testing; future: list layout;
+//FIXME: show icon in colorized cards, adjust foreground color.

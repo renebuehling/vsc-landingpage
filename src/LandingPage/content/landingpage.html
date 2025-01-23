@@ -43,8 +43,8 @@
           <div class="tools">
             <div title="Change order" class="movegrip" onmousedown="startdrag(event)">${gripVertical}</div>
           </div>
-          <h1 class="group-label" data-field="group.label" onclick="rename(event)" title="Click to rename">Group label</h1>
-          <div class="tools hover-only">          
+          <h1 class="group-label ifn-sealed" data-field="group.label" onclick="rename(event)" title="Click to rename">Group label</h1>
+          <div class="tools hover-only ifn-sealed">          
             <!-- <button title="Layout as Grid">${layoutGrid} </button>
             <button title="Layout as List">${layoutList} </button> -->
             <button title="Add bookmark to file or workspace" onclick="createBookmark(false)">${plus} </button>
@@ -52,20 +52,20 @@
           </div>
           <space></space>
           <div class="tools">
-            <button title="Remove Group &#013;Shift+Click to skip confirmation" onclick="remove(event)">${circleX} </button>
+            <button class="ifn-sealed" title="Remove Group &#013;Shift+Click to skip confirmation" onclick="remove(event)">${circleX} </button>
           </div>
         </div>
         <div class="projects grid">
           <div data-prototype data-guid="" class="project"  data-vscode-context='{"webviewSection": "card", "preventDefaultContextMenuItems": true}' oncontextmenu="modalPaletteShow(event)">
-            <div class="dragbefore"></div>
-            <div class="dragafter"></div>            
+            <div class="dragbefore ifn-sealed"></div>
+            <div class="dragafter ifn-sealed"></div>            
             <div class="tools">
               <!-- <button title="Select Color for this bookmark">${paintbrush} </button> -->
-              <button title="Rename Bookmark" onclick="rename(event)">${textCursorInput} </button>
+              <button class="ifn-sealed" title="Rename Bookmark" onclick="rename(event)">${textCursorInput} </button>
               <space></space>
               <div title="Change order" class="movegrip" onmousedown="startdrag(event)">${gripHorizontal}</div>
               <space></space>
-              <button title="Remove Bookmark &#013;Shift+Click to skip confirmation" onclick="remove(event)">${circleX} </button>
+              <button class="ifn-sealed" title="Remove Bookmark &#013;Shift+Click to skip confirmation" onclick="remove(event)">${circleX} </button>
             </div>
             <div class="textblock" onclick="openProject('${project.label}')" >
               <!-- <span data-field="project.typesvg"></span> -->
@@ -195,6 +195,7 @@
 
       let draggingGUID=undefined;
       let draggingEl=undefined;
+      let draggingSealed=false;
       let draggingGroup=false;
       function startdrag(event)
       {
@@ -202,6 +203,7 @@
         if (!guidProvider) return;
 
         draggingGroup = guidProvider.classList.contains('group');
+        draggingSealed = guidProvider.closest('.sealed')!==null;
         document.body.classList.add(draggingGroup?'is-dragging-group':'is-dragging');
         draggingEl=guidProvider;
         draggingEl.classList.add('dragged-item');
@@ -213,6 +215,14 @@
       {
         document.body.classList.remove('is-dragging','is-dragging-group');
         console.log('stop drag',event);
+        let newGUID;
+        if (draggingSealed) 
+        {
+          newGUID = 'CC-'+(new Date().getTime()); //Caution: MUST be string
+          draggingEl = draggingEl.cloneNode(true);
+          draggingEl.dataset['guid'] = newGUID;
+        }
+        else newGUID=undefined;
 
         if (draggingGUID===undefined)return;        
         {
@@ -221,7 +231,7 @@
             let dropGuidProvider = event.target.closest('[data-guid]');
             if (!dropGuidProvider) return;
             // console.log(`move ${draggingGUID} BEFORE ${dropGuidProvider.dataset['guid']}`);
-            vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'before'});
+            vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'before', cloneGUID:newGUID });
             dropGuidProvider.insertAdjacentElement('beforebegin', draggingEl);
           }
           else if(event.target.classList.contains('dragafter') || event.target.classList.contains('dragdown'))
@@ -229,7 +239,7 @@
             let dropGuidProvider = event.target.closest('[data-guid]');
             if (!dropGuidProvider) return;
             // console.log(`move ${draggingGUID} AFTER ${dropGuidProvider.dataset['guid']}`);
-            vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'after'});
+            vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'after', cloneGUID:newGUID });
             dropGuidProvider.insertAdjacentElement('afterend', draggingEl);
           }
           else if (event.target.classList.contains('group-label')) //drop on group, i.e. to allow dropping in empty groups
@@ -237,7 +247,7 @@
             let dropGuidProvider = event.target.closest('[data-guid]');
             if (!dropGuidProvider) return;
             // console.log(`move ${draggingGUID} AFTER ${dropGuidProvider.dataset['guid']}`);
-            vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'<irrelvant>'});
+            vscode.postMessage({command:'move',guid:draggingGUID, guid2: dropGuidProvider.dataset['guid'],pos:'<irrelvant>', cloneGUID:newGUID });
             dropGuidProvider.querySelector('.projects')?.appendChild(draggingEl);
           }
         }
@@ -246,6 +256,7 @@
         draggingEl.classList.remove('dragged-item');
         draggingEl=null;
         draggingGroup=false;
+        draggingSealed=false;
       }
 
 
@@ -262,6 +273,7 @@
         contextCard = event.target.closest('[data-guid]');
         // console.log('modal palette SHOW',event,!contextCard?'NOT ContextCard':'HAS ContextCard');
         if (!contextCard) return;
+        if (contextCard.closest('.sealed')) return; //.sealed in parent
 
         document.querySelector('.modal').classList.remove('hidden');
         let div = document.querySelector('.modal .palette');
@@ -310,6 +322,9 @@
                 //--- update/sync html and data model
                 for(const labeled of elGroup.querySelectorAll('[data-field="group.label"]'))
                   labeled.innerText = landingPageGroup.label;
+
+                let isSealed = landingPageGroup.guid==='@vsc-mru'; //auto-generated list may be locked
+                if (isSealed) elGroup.classList.add('sealed');
 
                 //--
                 

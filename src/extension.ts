@@ -6,6 +6,7 @@ import { window } from 'vscode';
 import { LandingPageTemplate } from './LandingPage/LandingPageTemplate';
 import { handleMessageFromWebview, registerContext } from './LandingPage/communication';
 import { demoModel, LandingPageModel } from './LandingPage/LandingPageModel';
+import { importVscRecentList } from './LandingPage/history';
 
 
 // This method is called when your extension is activated
@@ -65,6 +66,10 @@ export function activate(context: vscode.ExtensionContext)
 			webviewPanel.webview.onDidReceiveMessage(async message => await handleMessageFromWebview(message, webviewPanel, model), undefined, context.subscriptions);
 			//webviewPanel.webview.html = new LandingPageBuilder().makeHTML(); // getWebviewContent(await gerRecentProjects(), context, webviewPanel);
 			webviewPanel.webview.html = new LandingPageTemplate().makeHTML(); // getWebviewContent(await gerRecentProjects(), context, webviewPanel);
+
+			importVscRecentList();
+
+			
 		} catch (err: any) {
 				// Logger.GetInstance().log(`Exception opening extension at path: ${JSON.stringify(err.message)}`);
 		}

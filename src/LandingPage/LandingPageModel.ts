@@ -27,6 +27,10 @@ export interface LandingPageGroup extends LandingPageItem
   projects:LandingPageProject[];
 }
 
+/**
+ * Model for one bookmark that can point to a file, folder or workspace file.
+ * Also presentation info like color or custom label is stored here.
+ */
 export interface LandingPageProject extends LandingPageItem
 {
   /** Display text. Can be initialized to the file's basename, but can also be changed to any user defined string. */

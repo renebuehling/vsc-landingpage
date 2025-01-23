@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { findFirst, LandingPageGroup, LandingPageModel, LandingPageProject, ScanResult } from './LandingPageModel';
 import { group } from 'console';
+import { importVscRecentList } from './history';
+import { parseURI } from './utils';
 
 
 interface MessageFromWebview
@@ -17,6 +19,8 @@ interface MessageFromWebview
 
   /** For command 'move' the GUID of the element the dragged element (GUID) is placed relative to. */
   guid2?:string;
+  /** If given, command 'move' will create a copy and assign this GUID to the cloned node. */
+  cloneGUID?:string;
   /** For command 'move' the insertion relation to drop target (GUID2). */
   pos?:'before'|'after';
 
@@ -61,12 +65,31 @@ interface MessageToWebview
 
   function saveModel(model:LandingPageModel):void
   {
+    // console.log('Save',model);
     landingPageExtContext.globalState.update('landingPageModel',model);
+  }
+
+  async function populateVscMru(sharedModel:LandingPageModel):Promise<void>
+  {
+    let mruFound = findFirst('@vsc-mru',sharedModel);
+    let mruGroup:LandingPageGroup;
+    if(mruFound) //MRU list already yet in model -> use that
+    {
+      mruGroup=mruFound.target as LandingPageGroup;
+    }
+    else //MRU list not yet in model -> create now
+    {
+      mruGroup={guid:'@vsc-mru',label:'Recent',projects:[]};
+      sharedModel.groups.push(mruGroup);
+    }
+    mruGroup.projects=await importVscRecentList();
   }
   
 
   export async function handleMessageFromWebview(message:MessageFromWebview,webviewPanel:vscode.WebviewPanel, sharedModel:LandingPageModel):Promise<void>
   {
+    await populateVscMru(sharedModel);
+
     // console.log('main: handle message',this);
     switch(message.command)
     {
@@ -99,21 +122,12 @@ interface MessageToWebview
           if (selectedFiles)
           {
             for(let uri of selectedFiles)
-            {              
-              let name = uri.fsPath.split(/[\\\/]/).pop()||'error';
-
-              let pos = name.lastIndexOf('.');
-              let basename=name; let ext='';
-              if (pos>0) //file
-              {
-                basename = name.substring(0,pos);
-                ext = name.substring(pos+1);
-              }
-              //else //folder
+            {            
+              let nameParts = parseURI(uri);              
               
-              const p:LandingPageProject =     {guid:crypto.randomUUID(), label:basename, path:uri.toString()};
-              if (ext.length===0)              {p.icon = 'folder';}
-              else if (ext==='code-workspace') {p.icon = 'workspace';}
+              const p:LandingPageProject =     {guid:crypto.randomUUID(), label:nameParts.basename, path:uri.toString()};
+              if (!nameParts.ext)              {p.icon = 'folder';}
+              else if (nameParts.ext==='code-workspace') {p.icon = 'workspace';}
               //else: unknown file type
 
               (foundG.target as LandingPageGroup).projects.push(p);
@@ -207,7 +221,17 @@ interface MessageToWebview
           else //if (dragIs==='project')
           {
             let fromPos = foundDrag.ownerGroup!.projects.indexOf(foundDrag.target);
-            foundDrag.ownerGroup!.projects.splice(fromPos!,1); //remove from old parent
+
+            if (message.cloneGUID)
+            {
+              foundDrag.target = JSON.parse(JSON.stringify(foundDrag.target)); //clone
+              foundDrag.target.guid = message.cloneGUID;
+            }
+            else 
+            {
+              foundDrag.ownerGroup!.projects.splice(fromPos!,1); //remove from old parent
+            }
+
 
             if (dropIs==='project') // -> put project as sibling of other project
             {

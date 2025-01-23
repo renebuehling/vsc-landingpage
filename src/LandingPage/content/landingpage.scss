@@ -32,6 +32,21 @@
     display: none !important;
   }
 
+  .sealed // group of vsc-mru which is only a data *source*, but cannot receive changes
+  {
+    // border:1px solid fuchsia !important;
+    :not(.group-label).ifn-sealed //marked to be removed if card is .sealed
+    {
+      pointer-events: none;
+      visibility: hidden;
+      cursor: not-allowed;
+    }
+
+    .group-label.ifn-sealed //marked to be removed if card is .sealed
+    {
+      pointer-events: none; //label not editable
+    }
+  }
 
 
 
@@ -55,7 +70,7 @@
   {
     width: 19px;
     height: auto;
-    stroke: currentColor;
+    stroke: currentColor; 
     fill: none;
     stroke-width: 1px;
     stroke-linecap: round;
@@ -134,7 +149,7 @@
         padding:0; //var(--gapspace-s);
 
         border-radius: var(--corner);
-        &:hover
+        &:not(.sealed):hover
         {          
           border-color: var(--vscode-input-border);         
         }
@@ -157,8 +172,9 @@
       {
         .tools.hover-only {visibility: hidden;}
       }
-    }
 
+    }
+    
     //Drag-drop for the group 
     @at-root body:not(.is-dragging) //not in dragging operation
     {
@@ -230,6 +246,7 @@
         position: relative;
         background:var(--shade-color);
         color: var(--shade-foreground);
+        button {color:var(--shade-foreground);}
 
         &:not(:hover)
         {
@@ -340,7 +357,7 @@
       display: none;
     }
 
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;

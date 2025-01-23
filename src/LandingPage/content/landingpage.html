@@ -158,7 +158,7 @@
 
       function rename(event)
       {
-        console.log('clicked group', event);
+        // console.log('clicked group', event);
         const guidProvider = event.target.closest('[data-guid]');
         if (guidProvider) vscode.postMessage({command:'rename',guid:guidProvider.dataset['guid']});
         else alert('Cannot rename, closest guid not found.');
@@ -173,7 +173,7 @@
 
       function createBookmark(pickFolder)
       {
-        console.log('createBookmark()');
+        // console.log('createBookmark()');
         const guidProvider = event.target.closest('[data-guid]');
         if (guidProvider) vscode.postMessage({command:'createBookmark',guid:guidProvider.dataset['guid'],pickFolder:pickFolder});
         else alert('Cannot create bookmark, closest guid not found.');
@@ -181,7 +181,7 @@
 
       function createGroup()
       {
-        console.log('createGroup()');
+        // console.log('createGroup()');
         vscode.postMessage({command:'createGroup'});        
       }
 
@@ -208,13 +208,13 @@
         draggingEl=guidProvider;
         draggingEl.classList.add('dragged-item');
         draggingGUID=guidProvider.dataset['guid'];
-        console.log(`start drag of ${draggingGUID}`,event);
+        // console.log(`start drag of ${draggingGUID}`,event);
       }
 
       function stopdrag(event)
       {
         document.body.classList.remove('is-dragging','is-dragging-group');
-        console.log('stop drag',event);
+        // console.log('stop drag',event);
         let newGUID;
         if (draggingSealed) 
         {
@@ -266,8 +266,8 @@
         document.querySelector('.modal').classList.add('hidden');
       }
 
+      /** Card which was right-clicked. */
       let contextCard = undefined;
-
       function modalPaletteShow(event)
       {
         contextCard = event.target.closest('[data-guid]');
@@ -299,7 +299,7 @@
       window.addEventListener('message', event => 
         {
         const message = event.data; // The JSON data our extension sent
-        diag('got message! '+JSON.stringify(message));
+        // diag('got message! '+JSON.stringify(message));
 
         switch (message.command) 
         {
@@ -325,6 +325,7 @@
 
                 let isSealed = landingPageGroup.guid==='@vsc-mru'; //auto-generated list may be locked
                 if (isSealed) elGroup.classList.add('sealed');
+                
 
                 //--
                 
@@ -352,6 +353,7 @@
                     labeled.innerHTML = svg;
 
                   elProject.dataset['shade']=landingPageProject.shade;
+                  elProject.setAttribute('title',unescape(landingPageProject.path));
 
                 }   
               }catch(error) {console.error(error);}              
@@ -370,23 +372,8 @@
       (function() 
       {
         initPrototypes();
-
-          // let count = 0;
-          // setInterval(() => {
-          //     counter.textContent = count++;
-
-          //     // Alert the extension when our cat introduces a bug
-          //     if (Math.random() < 0.001 * count) {
-          //         vscode.postMessage({
-          //             command: 'alert',
-          //             text: '🐛  on line ' + count
-          //         })
-          //     }
-          // }, 100);
-
-          diag('🐕 docready!');
-          vscode.postMessage({command:'documentReady'});
-
+        // diag('🐕 docready!');
+        vscode.postMessage({command:'documentReady'});
       }());
     </script>
   </body>

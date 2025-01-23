@@ -232,18 +232,98 @@
         justify-content: flex-start;
         align-content: flex-start;
         gap: var(--gapspace);
+
+        .project //card
+        {        
+          width: 150px;
+          height: 120px;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+
+          .textblock
+          {
+            margin: var(--ctrlspace);
+            padding: var(--ctrlspace) calc( var(--ctrlspace) * 2 );
+            
+            flex-grow: 1;
+            display: flex;
+            align-items: flex-end;
+  
+            overflow:hidden;
+            //font-size:large;
+            cursor: pointer;
+  
+            [data-field="project.label"]
+            {
+              // max-height: 50%;
+  
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+            }
+          }
+
+          .pictoral
+          {
+            position: absolute;
+            //background: yellow;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+  
+            .icon
+            {
+              scale: 2.4;
+              opacity: .3;
+              transform: translateY(-2px);
+            }
+          }
+        }
+
       }
 
+      &.list
+      {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap:var(--gapspace-s);
+
+        .project //card
+        {
+          width: 300px;
+          height: calc(var(--gapspace) + 2* var(--gapspace-s));
+
+          .pictoral
+          {
+            .icon
+            {
+              scale: 1;
+              opacity: .3;
+              //transform: translateY(-2px);
+            }
+          }
+
+          .textblock
+          {
+            //FIXME: implement proper layout for .list - layout
+          }
+        }
+      }
+
+      // all layouts:
       .project //card
       {        
-        width: 150px;
-        height: 120px;
         outline: 1px solid var(--vscode-editorWidget-border);
         box-shadow: 0 2px 5px 0 #9393932e;
-        display: flex;
-        flex-direction: column;
         border-radius: var(--corner);
-        position: relative;
         background:var(--shade-color);
         color: var(--shade-foreground);
         button {color:var(--shade-foreground);}
@@ -256,52 +336,9 @@
         .tools //specific toolbar in project card
         {          
           margin: var(--ctrlspace);
-
           //.movegrip is now generalized above ⬆
         }
 
-        .textblock
-        {
-          margin: var(--ctrlspace);
-          padding: var(--ctrlspace) calc( var(--ctrlspace) * 2 );
-          
-          flex-grow: 1;
-          display: flex;
-          align-items: flex-end;
-
-          overflow:hidden;
-          //font-size:large;
-          cursor: pointer;
-
-          [data-field="project.label"]
-          {
-            // max-height: 50%;
-
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
-        }
-
-        .pictoral
-        {
-          position: absolute;
-          //background: yellow;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          pointer-events: none;
-
-          .icon
-          {
-            scale: 2.4;
-            opacity: .3;
-            transform: translateY(-2px);
-          }
-        }
         @at-root body:not(.is-dragging) //not in dragging operation
         {
           .dragbefore, .dragafter //hide the insertion targets

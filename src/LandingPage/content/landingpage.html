@@ -44,11 +44,11 @@
             <div title="Change order" class="movegrip" onmousedown="startdrag(event)">${gripVertical}</div>
           </div>
           <h1 class="group-label ifn-sealed" data-field="group.label" onclick="rename(event)" title="Click to rename">Group label</h1>
-          <div class="tools hover-only ifn-sealed">          
-            <!-- <button title="Layout as Grid">${layoutGrid} </button>
-            <button title="Layout as List">${layoutList} </button> -->
-            <button title="Add bookmark to file or workspace" onclick="createBookmark(false)">${plus} </button>
-            <button title="Add bookmark to folder" onclick="createBookmark(true)">${folderPlus} </button>
+          <div class="tools hover-only">          
+            <button title="Layout as Grid" onclick="setLayout(event,'grid')">${layoutGrid} </button>
+            <button title="Layout as List" onclick="setLayout(event,'list')"">${layoutList} </button>
+            <button class="ifn-sealed" title="Add bookmark to file or workspace" onclick="createBookmark(false)">${plus} </button>
+            <button class="ifn-sealed" title="Add bookmark to folder" onclick="createBookmark(true)">${folderPlus} </button>
           </div>
           <space></space>
           <div class="tools">
@@ -294,6 +294,30 @@
       }
 
 
+      function setLayout(event, layoutClass, elGroup)
+      {
+        if (!elGroup) elGroup = event.target.closest('[data-guid]');
+        
+        let elProjects = elGroup.querySelector('.projects');
+        if (elProjects)
+        {
+          if(layoutClass=='grid')
+          {
+            elProjects.classList.add('grid');
+            elProjects.classList.remove('list');            
+          }
+          else //list
+          {
+            elProjects.classList.remove('grid');
+            elProjects.classList.add('list');
+          }
+
+          vscode.postMessage({command:'patch',guid:elGroup.dataset['guid'], field:'layout', value:layoutClass});
+        }
+        else { console.warn('elGroup nil',event,layoutClass,elGroup, elProjects);}
+      }
+
+
       let model/*:LandingPageModel*/={};
 
       window.addEventListener('message', event => 
@@ -325,7 +349,8 @@
 
                 let isSealed = landingPageGroup.guid==='@vsc-mru'; //auto-generated list may be locked
                 if (isSealed) elGroup.classList.add('sealed');
-                
+
+                setLayout(undefined,landingPageGroup.layout||'grid',elGroup);
 
                 //--
                 

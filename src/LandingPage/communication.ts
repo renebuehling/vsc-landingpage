@@ -25,7 +25,7 @@ interface MessageFromWebview
   pos?:'before'|'after';
 
   /** For command 'patch' the name of the field to update. */
-  field?:'shade';
+  field?:'shade'|'layout';
   /** For command 'patch' the new value to assign to the field. */
   value?:any;
 }
@@ -252,6 +252,11 @@ interface MessageToWebview
         if (message.field==='shade')
         {
           (found.target as LandingPageProject).shade=message.value;
+          saveModel(sharedModel);
+        }
+        else if (message.field==='layout')
+        {
+          (found.target as LandingPageGroup).layout=message.value;
           saveModel(sharedModel);
         }
         else

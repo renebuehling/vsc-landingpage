@@ -25,6 +25,13 @@ export interface LandingPageGroup extends LandingPageItem
   label:string;
   /** Collection of bookmarks in this group. */
   projects:LandingPageProject[];
+
+  /** 
+   * How the group is layouted graphically.
+   * Default is grid (card tiles).
+   * List uses less space and is similar to filesystem list.
+   */
+  layout?:'grid'|'list';
 }
 
 /**
@@ -38,7 +45,7 @@ export interface LandingPageProject extends LandingPageItem
   /** Serialized URI to the file or folder that is linked in this bookmark. */
   path?:string;
   /** Hint to icon to display, usually initialized when setting path. */
-  icon?:'folder'|'workspace'; // omitted = 'file'
+  icon?:'file'|'folder'|'workspace'; // omitted/default = 'file'
   /** Color theming for this bookmark. */
   shade?:'red'|'orange'|'yellow'|'green'|'teal'|'pink'|'purple'|'blue'|'cyan'|'gray'|'silver'|'brown'|'white'|'black';
 }

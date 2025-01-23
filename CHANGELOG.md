@@ -22,4 +22,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Color picker for cards
 
 //TODO: display of vsc-mru documents; documentation; beta testing; future: list layout;
-//FIXME: show icon in colorized cards, adjust foreground color.

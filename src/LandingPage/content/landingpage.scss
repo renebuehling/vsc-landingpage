@@ -229,6 +229,7 @@
         border-radius: var(--corner);
         position: relative;
         background:var(--shade-color);
+        color: var(--shade-foreground);
 
         &:not(:hover)
         {
@@ -275,7 +276,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          z-index: -1;
+          pointer-events: none;
 
           .icon
           {
@@ -386,20 +387,20 @@
 
   //--shade-color: blue;
 
-  *[data-shade="red"] { --shade-color: #D50000;}
-  *[data-shade="orange"] { --shade-color: #FF5722;}
-  *[data-shade="yellow"] { --shade-color: #FFC107;}
-  *[data-shade="green"] { --shade-color: #7CB342;}
-  *[data-shade="teal"] { --shade-color: #009688;}
-  *[data-shade="pink"] { --shade-color: #C51162;}
-  *[data-shade="purple"] { --shade-color: #9C27B0;}
-  *[data-shade="blue"] { --shade-color: #3F51B5;}
-  *[data-shade="cyan"] { --shade-color: #2196F3;}
-  *[data-shade="gray"] { --shade-color: #9E9E9E;}
-  *[data-shade="silver"] { --shade-color: #607D8B;}
-  *[data-shade="brown"] { --shade-color: #795548;}
-  *[data-shade="white"] { --shade-color: #FAFAFA;}
-  *[data-shade="black"] { --shade-color: #212121;}
+  *[data-shade="red"]     { --shade-color: #D50000; --shade-foreground:white; }
+  *[data-shade="orange"]  { --shade-color: #FF5722; --shade-foreground:white; }
+  *[data-shade="yellow"]  { --shade-color: #FFC107; --shade-foreground:black; }
+  *[data-shade="green"]   { --shade-color: #7CB342; --shade-foreground:white; }
+  *[data-shade="teal"]    { --shade-color: #009688; --shade-foreground:white; }
+  *[data-shade="pink"]    { --shade-color: #C51162; --shade-foreground:white; }
+  *[data-shade="purple"]  { --shade-color: #9C27B0; --shade-foreground:white; }
+  *[data-shade="blue"]    { --shade-color: #3F51B5; --shade-foreground:white; }
+  *[data-shade="cyan"]    { --shade-color: #2196F3; --shade-foreground:white; }
+  *[data-shade="gray"]    { --shade-color: #9E9E9E; --shade-foreground:white; }
+  *[data-shade="silver"]  { --shade-color: #607D8B; --shade-foreground:white; }
+  *[data-shade="brown"]   { --shade-color: #795548; --shade-foreground:white; }
+  *[data-shade="white"]   { --shade-color: #FAFAFA; --shade-foreground:black; }
+  *[data-shade="black"]   { --shade-color: #212121; --shade-foreground:white; }
 
 }
 

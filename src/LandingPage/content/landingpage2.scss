@@ -191,6 +191,8 @@
       .titlebar
       {
         margin-bottom:var(--gapspace);
+        display: flex;
+        gap:var(--gapspace);
 
         .group-label //h1
         {
@@ -201,6 +203,14 @@
           padding:0; //var(--gapspace-s);
           border-radius: var(--corner);
         }
+
+        .tools
+        {
+          display: flex;
+          gap:var(--ctrlspace);
+          button {aspect-ratio: 1;}
+        }
+        &:not(:hover) .hover-only button {visibility: hidden;}
       }
     }
 

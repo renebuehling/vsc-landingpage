@@ -85,7 +85,7 @@ function addProject(landingPageProject, elGroup)
   return newPro;
 }
 
-function createBookmark(event, pickFolder) // FIXME: Migrate to tool
+function createBookmark(event, pickFolder)
 {
   // console.log('createBookmark()');
   const guidProvider = event.target.closest('[data-guid]');

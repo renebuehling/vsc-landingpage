@@ -37,7 +37,7 @@ const extensionConfig = {
             loader: 'ts-loader'
           }
         ]
-      },
+      },           
       // {
       //   test: /\.s[ac]ss$/i,
       //   use: [
@@ -52,6 +52,10 @@ const extensionConfig = {
       {
         test: /\.svg$/,
         loader: 'svg-inline-loader' //https://v4.webpack.js.org/loaders/svg-inline-loader/
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
       }
     ]
   },

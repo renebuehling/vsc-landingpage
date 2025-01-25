@@ -28,4 +28,8 @@ export const icons=
   appWindow : require('lucide-static/icons/app-window.svg'),
   fileSliders : require('lucide-static/icons/file-sliders.svg'),
   fileQuestion : require('lucide-static/icons/file-question.svg'),
+  
+  squareMousePointer : require('lucide-static/icons/square-mouse-pointer.svg'),
+  move : require('lucide-static/icons/move.svg'),
+  
 }; 

@@ -1,0 +1,316 @@
+.landingpage
+{
+  --gapspace:16px;    // gaps between layout areas
+  --gapspace-s:8px;   // smaller gaps between layout areas
+  --ctrlspace:2px;    // small spacing for padding/margins between i.e. icon and label
+  --corner:4px;       // borderradius
+  --buttonsize:24px;  // base size of a button, including icon (svg may be smaller, but relates to 24x24 design scale)
+  --accent-color: var(--vscode-notebook-cellInsertionIndicator); // blue highlight or action indicator color
+
+  user-select: none;
+  *
+  {
+    transition: outline-color 0.2s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  *[data-shade="red"]     { --shade-color: #D50000; --shade-foreground:white; }
+  *[data-shade="orange"]  { --shade-color: #FF5722; --shade-foreground:white; }
+  *[data-shade="yellow"]  { --shade-color: #FFC107; --shade-foreground:black; }
+  *[data-shade="green"]   { --shade-color: #7CB342; --shade-foreground:white; }
+  *[data-shade="teal"]    { --shade-color: #009688; --shade-foreground:white; }
+  *[data-shade="pink"]    { --shade-color: #C51162; --shade-foreground:white; }
+  *[data-shade="purple"]  { --shade-color: #9C27B0; --shade-foreground:white; }
+  *[data-shade="blue"]    { --shade-color: #3F51B5; --shade-foreground:white; }
+  *[data-shade="cyan"]    { --shade-color: #2196F3; --shade-foreground:white; }
+  *[data-shade="gray"]    { --shade-color: #9E9E9E; --shade-foreground:white; }
+  *[data-shade="silver"]  { --shade-color: #607D8B; --shade-foreground:white; }
+  *[data-shade="brown"]   { --shade-color: #795548; --shade-foreground:white; }
+  *[data-shade="white"]   { --shade-color: #FAFAFA; --shade-foreground:black; }
+  *[data-shade="black"]   { --shade-color: #212121; --shade-foreground:white; }
+
+  &[data-active-tool="tExplore"] .interactable{ cursor:pointer; }
+  &[data-active-tool="tMove"] .interactable{ cursor:move; }
+
+  .lucide
+  {
+    width: 19px;
+    height: auto;
+    stroke: currentColor; 
+    fill: none;
+    stroke-width: 1px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  button
+  {
+    display: flex;
+    padding: var(--ctrlspace);
+    justify-content: center;
+    align-items: center;
+
+    cursor:pointer;
+
+    color: var(--vscode-icon-foreground);
+    background-color: transparent;
+    &:hover { background-color: var(--vscode-toolbar-hoverBackground); }
+
+    border: none;
+    border-radius: var(--corner);
+
+    span
+    {
+      margin-left: var(--ctrlspace);
+      margin-right: var(--ctrlspace);
+      padding-left: var(--ctrlspace);
+      padding-right: var(--ctrlspace);
+    }
+  }
+
+  .toolbar
+  {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--buttonsize);
+    background-color: var(--vscode-activityBar-background);
+    padding: var(--gapspace-s);
+    border-right: 1px solid var(--vscode-activityBar-border);
+    display: flex;
+    flex-direction: column;
+    gap:var(--ctrlspace);
+    z-index: 1;
+
+    .separator
+    {
+      border-bottom: 1px solid var(--vscode-activityBar-border);
+      margin-left: calc(-1* var(--gapspace-s));
+      margin-right: calc(-1* var(--gapspace-s));
+      height: calc( var(--gapspace-s) / 2);
+      margin-bottom: calc( var(--gapspace-s) / 2);
+    }
+
+    button
+    {
+      width:var(--buttonsize);
+      height:var(--buttonsize);
+      position: relative; //relevant for tooltip
+
+      &.active
+      {
+        background-color: var(--vscode-toolbar-hoverBackground);
+      }
+
+      > * {pointer-events: none;} //avoid that event.target is the button's content instead of the button itself
+
+      .tooltiptext
+      {
+        visibility: hidden;
+        max-width: 250px;
+        width: max-content; 
+        background-color: var(--vscode-activityBar-background);
+        border:1px solid var(--vscode-activityBar-border);
+        box-shadow: 0px 4px 8px rgba(0,0,0,0.3);        
+        border-radius: var(--corner);
+        padding: var(--gapspace-s);                
+
+        text-align: left;
+        font-family: Segoe WPC, Segoe UI, sans-serif;
+        font-size: smaller;
+
+        h1
+        {
+          padding:0; margin:0;
+          font-size: small;
+          light {font-weight: lighter;}
+        }
+        p:last-child
+        {
+          margin-bottom: 0; //otherwise the p's margin will add to tooltip's padding and make the gap too big
+        }
+      
+        /* Position the tooltip */
+        position: absolute;
+        // z-index: 1;
+        left: calc( var(--buttonsize) + var(--ctrlspace));
+        top: calc( var(--buttonsize) + var(--ctrlspace));
+      }
+      &:hover .tooltiptext 
+      {
+        visibility: visible;
+      }
+    }
+  }
+
+  .content
+  {
+    position: absolute;
+    left:calc(var(--buttonsize) + (2 * var(--gapspace-s)) + 1px);
+    top:0;
+    right:0;
+    height: auto;
+    outline: 1px dotted fuchsia;
+    padding:var(--gapspace);
+
+
+    .col
+    {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gapspace);
+      padding-top: var(--gapspace);
+      padding-bottom: var(--gapspace);
+    }
+
+    .group
+    {
+      .titlebar
+      {
+        margin-bottom:var(--gapspace);
+
+        .group-label //h1
+        {
+          // color:cornflowerblue;
+          font-weight: 400;
+          margin:0;
+          margin-top: -4px; //temporary Bugfix as text is not in line with tools
+          border:1px solid transparent;
+          padding:0; //var(--gapspace-s);
+        }
+      }
+    }
+
+    .projects
+    {
+      &.grid
+      {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: flex-start;
+        gap: var(--gapspace);
+
+        .project //card
+        {        
+          width: 150px;
+          height: 120px;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          overflow: hidden;
+          
+          .pictoral
+          {
+            position: absolute;
+            width: 100%; height: 100%;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .icon
+            {
+              scale: 4;
+              opacity: .2;
+            }
+          }
+
+          .textblock
+          {
+            position: absolute;
+            bottom:0;
+            padding: var(--gapspace-s);
+
+            flex-grow: 1;
+            display: flex;
+            align-items: flex-end;                    
+  
+            [data-field="project.label"]
+            {
+              // max-height: 50%;
+  
+              display: -webkit-box;
+              -webkit-line-clamp: 6;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+            }
+          }
+        }
+      }
+      
+      &.list
+      {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap:var(--gapspace-s);
+
+        .project
+        {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          max-width: 200px;
+          // height:var(--gapspace);
+          padding:var(--ctrlspace);
+          gap: var(--ctrlspace);
+          overflow: hidden;
+          position: relative;
+
+          .pictoral
+          {
+            .icon
+            {
+              margin-top: 1px; margin-bottom: -1px; //visual fix, ... idk
+            }
+          }
+
+          .textblock
+          {
+            flex-grow: 1;
+            display: flex;
+            align-items: baseline;
+            padding-top: 1px; //visual fix, ... idk
+  
+            [data-field="project.label"]
+            {
+              display: -webkit-box;
+              -webkit-line-clamp: 1;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+              max-height: 100%;
+            }
+          }
+
+        }
+      }
+
+      // all layouts:
+      .project //card
+      {        
+        outline: 1px solid var(--vscode-editorWidget-border);
+        box-shadow: 0 2px 5px 0 #9393932e;
+        border-radius: var(--corner);
+        background:var(--shade-color);
+        color: var(--shade-foreground);
+        button {color:var(--shade-foreground);}
+
+        &:hover
+        {
+          outline-color: var(--accent-color);
+        }
+
+        .textblock
+        {
+          overflow:hidden;
+        }
+      }
+    }
+  }
+
+} //.landingpage

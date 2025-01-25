@@ -101,6 +101,7 @@
       padding-right: var(--ctrlspace);
     }
   }
+  
 
   space, .space
   {
@@ -248,11 +249,7 @@
             
             flex-grow: 1;
             display: flex;
-            align-items: flex-end;
-  
-            overflow:hidden;
-            //font-size:large;
-            cursor: pointer;
+            align-items: flex-end;        
   
             [data-field="project.label"]
             {
@@ -298,11 +295,25 @@
 
         .project //card
         {
+          position: relative;
           width: 300px;
           height: calc(var(--gapspace) + 2* var(--gapspace-s));
 
+          .tools
+          {
+            pointer-events: none; 
+            > div, button
+            {
+              pointer-events: auto;
+            }
+          }
+
           .pictoral
           {
+            position: absolute;
+            top: 0; left: 0;
+            padding: var(--gapspace-s);
+
             .icon
             {
               scale: 1;
@@ -313,7 +324,25 @@
 
           .textblock
           {
-            //FIXME: implement proper layout for .list - layout
+            top: 0;
+            left: calc( var(--gapspace) + var(--gapspace-s));
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            padding: var(--gapspace-s);
+
+            [data-field="project.label"]
+            {
+              // max-height: 50%;
+  
+              display: -webkit-box;
+              -webkit-line-clamp: 1;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+            }
+
+            //FIXME: list layout
+
           }
         }
       }
@@ -337,6 +366,11 @@
         {          
           margin: var(--ctrlspace);
           //.movegrip is now generalized above ⬆
+        }
+        .textblock
+        {
+          overflow:hidden;
+          cursor: pointer;
         }
 
         @at-root body:not(.is-dragging) //not in dragging operation

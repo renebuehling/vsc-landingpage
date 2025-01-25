@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <style>/*%landingpage2.scss%*/</style>
+  </head>
+  <body class="landingpage" data-active-tool="tExplore" data-vscode-context='{"preventDefaultContextMenuItems": true }'>
+    <div id="mainToolbar" class="toolbar">
+      <button id="tExplore" onclick="selectTool(event)" class="active">
+        ${squareMousePointer}
+        <span class="tooltiptext">
+          <h1>Explorer Tool <light>(Default)</light></h1>
+          <p>When a bookmark is clicked, the linked file or workspace is opened in VS Code.</p>
+        </span>
+      </button>
+      <div class="separator"></div>
+      <button id="tMove" onclick="selectTool(event)">
+        ${move}
+        <span class="tooltiptext">
+          <h1>Move Tool</h1>
+          <p>Drag and drop bookmarks and groups to change their layout order.</p>
+        </span>
+      </button>
+    </div>
+    <div class="content col">
+      <div data-prototype data-guid="" class="group">
+        <div class="dragup"></div>
+        <div class="dragdown"></div>
+        <div class="titlebar">
+          <h1 class="group-label ifn-sealed interactable" data-field="group.label" onclick="rename(event)">(Group label)</h1>
+        </div>
+        <div class="projects list //grid">
+          <div data-prototype data-guid="" class="project interactable" data-shade="">
+            <div class="dragbefore ifn-sealed"></div>
+            <div class="dragafter ifn-sealed"></div>
+            <div class="pictoral">
+              <div class="icon" data-field="project.typesvg">${paintbrush}</div>
+            </div>
+            <div class="textblock" onclick="openProject('${project.label}')" >
+              <div data-field="project.label">
+                Project Label with a lot of text to test overflow and ellipsis.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /content -->  
+
+
+    <script>/*%landingpage2.js%*/</script>
+  </body>
+</html>

@@ -6,6 +6,12 @@
   --corner:4px;       // borderradius
   --buttonsize:24px;  // base size of a button, including icon (svg may be smaller, but relates to 24x24 design scale)
   --accent-color: var(--vscode-notebook-cellInsertionIndicator); // blue highlight or action indicator color
+  --danger-color: #d50000;
+
+  div[data-prototype]
+  {
+    display: none !important;
+  }
 
   user-select: none;
   *
@@ -29,8 +35,18 @@
   *[data-shade="white"]   { --shade-color: #FAFAFA; --shade-foreground:black; }
   *[data-shade="black"]   { --shade-color: #212121; --shade-foreground:white; }
 
-  &[data-active-tool="tExplore"] .interactable{ cursor:pointer; }
-  &[data-active-tool="tMove"] .interactable{ cursor:move; }
+  &[data-active-tool="tExplore"] .project { cursor:pointer; }
+  &[data-active-tool="tRename"]
+  {
+    .group:not(.sealed) { .group-label, .project{ cursor:text; border:1px dashed var(--accent-color);} }
+    .group.sealed { cursor: not-allowed;  > * { pointer-events: none; } }
+  } 
+  &[data-active-tool="tDelete"]
+  {
+    .group:not(.sealed) { .group-label, .project{ cursor:crosshair; border:1px dashed var(--danger-color);} }
+    .group.sealed { cursor: not-allowed;  > * { pointer-events: none; } }
+  } 
+  &[data-active-tool="tMove"] { .group-label, .project{ cursor:move; border:1px dashed var(--accent-color);} }
 
   .lucide
   {
@@ -151,8 +167,12 @@
     top:0;
     right:0;
     height: auto;
-    outline: 1px dotted fuchsia;
+    // outline: 1px dotted fuchsia;
     padding:var(--gapspace);
+    
+    display: flex;
+    flex-direction: column;
+    gap:var(--gapspace);
 
 
     .col
@@ -166,6 +186,8 @@
 
     .group
     {
+      margin-bottom:var(--gapspace);
+
       .titlebar
       {
         margin-bottom:var(--gapspace);
@@ -176,8 +198,8 @@
           font-weight: 400;
           margin:0;
           margin-top: -4px; //temporary Bugfix as text is not in line with tools
-          border:1px solid transparent;
           padding:0; //var(--gapspace-s);
+          border-radius: var(--corner);
         }
       }
     }
@@ -256,6 +278,7 @@
           flex-direction: row;
           flex-wrap: nowrap;
           max-width: 200px;
+          width: 300px;
           // height:var(--gapspace);
           padding:var(--ctrlspace);
           gap: var(--ctrlspace);

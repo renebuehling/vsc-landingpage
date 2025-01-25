@@ -32,8 +32,12 @@ interface MessageFromWebview
 
 interface MessageToWebview
 {
+  /** Signal ID to send to webview. */
   command:string;
+  /** Data model to render. */
   model:LandingPageModel;
+  /** If true, the webview does not sync existing dom elements, but recreates the whole render tree. */
+  forceRebuild?:boolean;
 }
 
 // export class LandingPageCommunication
@@ -139,9 +143,10 @@ interface MessageToWebview
         });
         break;
       case 'createGroup':
-        sharedModel.groups.push({guid:crypto.randomUUID(),label:'Group',projects:[]});
+        //sharedModel.groups.push({guid:crypto.randomUUID(),label:'Group',projects:[]});
+        sharedModel.groups.splice(0,0,{guid:crypto.randomUUID(),label:'Group',projects:[]});
         console.log('updated model > created Group',sharedModel);
-        sendMessageToWebview({command:'syncModel',model:sharedModel}, webviewPanel);
+        sendMessageToWebview({command:'syncModel',model:sharedModel, forceRebuild:true}, webviewPanel);
         saveModel(sharedModel);
         break;
       case 'remove':  //{guid: item to remove}        

@@ -7,16 +7,40 @@
       <button id="tExplore" onclick="selectTool(event)" class="active">
         ${squareMousePointer}
         <span class="tooltiptext">
-          <h1>Explorer Tool <light>(Default)</light></h1>
+          <h1>Reader Tool <light>(Default)</light></h1>
           <p>When a bookmark is clicked, the linked file or workspace is opened in VS Code.</p>
         </span>
+      </button>      
+      <button id="tRename" onclick="selectTool(event)">
+        ${textCursorInput}
+        <span class="tooltiptext">
+          <h1>Rename Tool</h1>
+          <p>Click on bookmarks or groups to edit their display text.</p>
+        </span>
       </button>
-      <div class="separator"></div>
       <button id="tMove" onclick="selectTool(event)">
         ${move}
         <span class="tooltiptext">
           <h1>Move Tool</h1>
-          <p>Drag and drop bookmarks and groups to change their layout order.</p>
+          <p>Drag and drop bookmarks and groups to customize their layout order.</p>
+        </span>
+      </button>
+      <button id="tDelete" onclick="selectTool(event)">
+        ${trash2}
+        <span class="tooltiptext">
+          <h1>Delete Tool</h1>
+          <p>Click on bookmarks and groups to delete them from the page.<br>
+            This cannot be undone.</p>
+          <p>Linked files or folders on your drives themself are not deleted.</p>
+          <p>Hold <code>Ctrl</code> during click to skip the confirmation dialog.</p>
+        </span>
+      </button>
+      <div class="separator"></div>
+      <button onclick="createGroup()">
+        ${plus}
+        <span class="tooltiptext">
+          <h1>⚡ Create group</h1>
+          <p>Click to add a new group for bookmark storage. Use Move Tool to change its order afterwards.</p>
         </span>
       </button>
     </div>
@@ -25,16 +49,16 @@
         <div class="dragup"></div>
         <div class="dragdown"></div>
         <div class="titlebar">
-          <h1 class="group-label ifn-sealed interactable" data-field="group.label" onclick="rename(event)">(Group label)</h1>
+          <h1 class="group-label ifn-sealed interactable" data-field="group.label" onclick="clickGroup(event)">(Group label)</h1>
         </div>
         <div class="projects list //grid">
-          <div data-prototype data-guid="" class="project interactable" data-shade="">
+          <div onclick="clickProject(event)" data-prototype data-guid="" class="project interactable" data-shade="">
             <div class="dragbefore ifn-sealed"></div>
             <div class="dragafter ifn-sealed"></div>
             <div class="pictoral">
               <div class="icon" data-field="project.typesvg">${paintbrush}</div>
             </div>
-            <div class="textblock" onclick="openProject('${project.label}')" >
+            <div class="textblock">
               <div data-field="project.label">
                 Project Label with a lot of text to test overflow and ellipsis.
               </div>

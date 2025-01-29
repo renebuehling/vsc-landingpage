@@ -123,6 +123,8 @@ function stopdrag(event)
 {
   document.body.classList.remove('is-dragging','is-dragging-group');
   // console.log('stop drag',event);
+  draggingEl.classList.remove('dragged-item');//1st, because draggingEl might be reassigned when cloning a sealed item
+
   let newGUID;
   if (draggingSealed) 
   {
@@ -132,7 +134,7 @@ function stopdrag(event)
   }
   else {newGUID=undefined;}
 
-  if (draggingGUID===undefined) {return;}
+  if (draggingGUID!==undefined)
   {
     if(event.target.classList.contains('dragbefore') || event.target.classList.contains('dragup'))
     {
@@ -160,8 +162,7 @@ function stopdrag(event)
     }
   }
   
-  draggingGUID=undefined;
-  draggingEl.classList.remove('dragged-item');
+  draggingGUID=undefined;  
   draggingEl=null;
   draggingGroup=false;
   draggingSealed=false;

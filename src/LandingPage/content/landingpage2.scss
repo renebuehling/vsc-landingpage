@@ -35,7 +35,11 @@
   *[data-shade="white"]   { --shade-color: #FAFAFA; --shade-foreground:black; }
   *[data-shade="black"]   { --shade-color: #212121; --shade-foreground:white; }
 
-  &[data-active-tool="tExplore"] .project { cursor:pointer; }
+  &[data-active-tool="tExplore"]  
+  { 
+    .project { cursor:pointer; }
+    .group .titlebar .tools {visibility: visible !important;}
+  }
   &[data-active-tool="tRename"]
   {
     .group:not(.sealed) { .group-label, .project{ cursor:text; border:1px dashed var(--accent-color);} }
@@ -46,7 +50,29 @@
     .group:not(.sealed) { .group-label, .project{ cursor:crosshair; border:1px dashed var(--danger-color);} }
     .group.sealed { cursor: not-allowed;  > * { pointer-events: none; } }
   } 
-  &[data-active-tool="tMove"] { .group-label, .project{ cursor:move; border:1px dashed var(--accent-color);} }
+  &[data-active-tool="tMove"]
+  {
+    .group { .group-label, .project:not(.dragged-item){ cursor:move; border:1px dashed var(--accent-color);} }
+    .group.sealed 
+    { 
+      //cursor: not-allowed;  
+      .project {cursor:copy;}
+      .dragup, .dragbefore, .dragdown, .dragafter  { pointer-events: none; display:none;} //TODO: remove double: currently this AND class ifn-sealed try to disable the hotspots, one is sufficient
+    }
+    &:not(.is-dragging) //hide dropzones unless dragging
+    {
+      .dragup, .dragbefore, .dragdown, .dragafter  {display:none;}
+    }
+    /*&.is-dragging  //show dropzones while dragging
+    {
+      .dragup, .dragbefore {background-color:rgba(5, 238, 44, 0.473);}
+      .dragdown, .dragafter {background-color:rgba(255, 0, 0, 0.473);}
+    }*/
+  } 
+  &:not([data-active-tool="tMove"])
+  {
+    .dragup, .dragbefore, .dragdown, .dragafter  {display:none;} //hide dropzones in tools other than move
+  }
 
   .lucide
   {
@@ -97,7 +123,7 @@
     display: flex;
     flex-direction: column;
     gap:var(--ctrlspace);
-    z-index: 1;
+    z-index: 99;
 
     .separator
     {
@@ -206,6 +232,7 @@
 
         .tools
         {
+          visibility: hidden; //unless tool is explore
           display: flex;
           gap:var(--ctrlspace);
           button {aspect-ratio: 1;}
@@ -232,8 +259,8 @@
           display: flex;
           flex-direction: column;
           position: relative;
-          overflow: hidden;
-          
+          //overflow: hidden; // no! this would hide the drag-drop indicator for move-mode!
+
           .pictoral
           {
             position: absolute;
@@ -270,6 +297,7 @@
               overflow: hidden;
             }
           }
+
         }
       }
       
@@ -292,7 +320,7 @@
           // height:var(--gapspace);
           padding:var(--ctrlspace);
           gap: var(--ctrlspace);
-          overflow: hidden;
+          //overflow: hidden; // no! this would hide the drag-drop indicator for move-mode!
           position: relative;
 
           .pictoral
@@ -319,7 +347,6 @@
               max-height: 100%;
             }
           }
-
         }
       }
 
@@ -342,8 +369,41 @@
         {
           overflow:hidden;
         }
+
+        &.dragged-item //for the dragged item itself, indicate visually, hide the hotspots/lock mouse interaction
+        {
+          opacity:0.5;
+          pointer-events: none;            
+        }
+
+        .dragbefore, .dragafter //mouse over drop zone -> draw insertion mark (via side-border)
+        {
+          width: calc( 50% + var(--gapspace-s) );
+          height: 100%;
+          position: absolute;
+          top:0;
+          z-index: 1; //required for correct event overlapping
+          //@at-root body.is-dragging
+          //{
+            &:hover {border-color: var(--vscode-notebook-cellInsertionIndicator);}
+          //}
+        }
+
+        .dragbefore
+        {
+          left:calc( var(--gapspace-s) * 0.25);
+          border-left: calc(  0.25 * var(--gapspace) ) solid transparent;
+          margin-left: calc( -0.625 * var(--gapspace) );
+        }
+        .dragafter
+        {
+          right:calc( var(--gapspace-s) * 0.25);
+          border-right: calc(  0.25 * var(--gapspace) ) solid transparent;
+          margin-right: calc( -0.625 * var(--gapspace) );
+        }
       }
     }
   }
 
 } //.landingpage
+

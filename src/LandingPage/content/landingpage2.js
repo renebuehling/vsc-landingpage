@@ -107,6 +107,8 @@ let draggingSealed=false;
 let draggingGroup=false;
 function startdrag(event)
 {
+  if (getActiveTool()!=='tMove'){return;}
+
   let guidProvider = event.target.closest('[data-guid]');
   if (!guidProvider) {return;}
 

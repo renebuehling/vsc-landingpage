@@ -52,7 +52,14 @@
   } 
   &[data-active-tool="tMove"]
   {
-    .group { .group-label, .project:not(.dragged-item){ cursor:move; border:1px dashed var(--accent-color);} }
+    .group 
+    {
+      &:not(.dragged-item) .group-label,  //when move tool > grouplabel bordered (unless dragged itself)
+      .project:not(.dragged-item)         //when move tool > project card bordered (unless dragged itself)
+      {
+        cursor:move; border:1px dashed var(--accent-color);
+      } 
+    }
     .group.sealed 
     { 
       //cursor: not-allowed;  
@@ -61,13 +68,17 @@
     }
     &:not(.is-dragging) //hide dropzones unless dragging
     {
-      .dragup, .dragbefore, .dragdown, .dragafter  {display:none;}
+      .dragbefore, .dragafter  {display:none;}
     }
-    /*&.is-dragging  //show dropzones while dragging
+    &:not(.is-dragging-group) //hide dropzones unless dragging
     {
-      .dragup, .dragbefore {background-color:rgba(5, 238, 44, 0.473);}
-      .dragdown, .dragafter {background-color:rgba(255, 0, 0, 0.473);}
-    }*/
+      .dragup, .dragdown  {display:none;}
+    }
+    // &.is-dragging, &.is-dragging-group  //show dropzones while dragging
+    // {
+    //   .dragup, .dragbefore {background-color:rgba(5, 238, 44, 0.473);} //debug visualization
+    //   .dragdown, .dragafter {background-color:rgba(255, 0, 0, 0.473);} //debug visualization
+    // }
   } 
   &:not([data-active-tool="tMove"])
   {
@@ -213,6 +224,7 @@
     .group
     {
       margin-bottom:var(--gapspace);
+      position: relative; //required for dropzones
 
       .titlebar
       {
@@ -230,6 +242,16 @@
           border-radius: var(--corner);
         }
 
+        @at-root body.is-dragging // is currently in card-dragging operation
+        {
+          .group-label:hover //dragging over group label = show bottom line drop indicator
+          { 
+            border:none !important; 
+            border-radius: 0 !important; 
+            border-bottom: calc( 0.25 * var(--gapspace) ) solid var(--vscode-notebook-cellInsertionIndicator) !important; 
+          }
+        }
+
         .tools
         {
           visibility: hidden; //unless tool is explore
@@ -239,6 +261,45 @@
         }
         &:not(:hover) .hover-only button {visibility: hidden;}
       }
+      &.dragged-item //for the dragged item itself, indicate visually, hide the hotspots/lock mouse interaction
+      {
+        opacity:0.5;
+        pointer-events: none;
+      }
+
+      .dragup, .dragdown //mouse over drop zone -> draw insertion mark (via side-border)
+      {
+        width: 100%; 
+        height: calc( 50% + var(--gapspace-s) );
+        position: absolute;
+        z-index: 1;
+        &:hover {border-color: var(--vscode-notebook-cellInsertionIndicator);}
+      }
+      .dragup
+      {              
+        border-top: calc(  0.25 * var(--gapspace) ) solid transparent;
+        margin-top: calc( -0.625 * var(--gapspace) );
+        // background-color: rgba(255, 166, 0, 0.438);
+      }
+
+      .dragdown
+      {
+        bottom:0;
+        border-bottom: calc(  0.25 * var(--gapspace) ) solid transparent;
+        margin-bottom: calc( -0.625 * var(--gapspace) );
+        // background-color: rgba(0, 255, 255, 0.479);
+      }
+
+      @at-root body.is-dragging, body.is-dragging-group 
+      {
+        .group.sealed //disable sealed group while dragging (it cannot be a droptarget)
+        {
+          opacity: 0.5;
+          pointer-events: none;
+          .group-label, .project {border:none !important;}
+        }
+      }
+
     }
 
     .projects

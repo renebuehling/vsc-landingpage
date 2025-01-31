@@ -20,5 +20,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Store and restore bookmarks in extension's globalStore
 - Using [Lucide](https://lucide.dev/icons/folder-plus) icons
 - Color picker for cards
+- Card and List layouts for groups
+- Display of recent elements from VS Code 
 
-//TODO: display of vsc-mru documents; documentation; beta testing; future: list layout;
+//TODO: documentation;

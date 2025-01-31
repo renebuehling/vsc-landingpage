@@ -11,6 +11,13 @@
           <p>When a bookmark is clicked, the linked file or workspace is opened in VS Code.</p>
         </span>
       </button>      
+      <button id="tMove" onclick="selectTool(event)">
+        ${move}
+        <span class="tooltiptext">
+          <h1>Move Tool</h1>
+          <p>Drag and drop bookmarks and groups to customize their layout order.</p>
+        </span>
+      </button>
       <button id="tRename" onclick="selectTool(event)">
         ${textCursorInput}
         <span class="tooltiptext">
@@ -18,12 +25,33 @@
           <p>Click on bookmarks or groups to edit their display text.</p>
         </span>
       </button>
-      <button id="tMove" onclick="selectTool(event)">
-        ${move}
-        <span class="tooltiptext">
-          <h1>Move Tool</h1>
-          <p>Drag and drop bookmarks and groups to customize their layout order.</p>
-        </span>
+      <button id="tPaint" onclick="selectTool(event)">
+        <div>
+          ${paintbrush}
+          <span class="tooltiptext">
+            <h1>Paint Tool</h1>
+            <p>Click on bookmarks to apply a background color.</p>
+          </span>
+        </div>
+        <div class="colorslot" data-shade="red" onclick="togglePaintPicker()" >
+        </div>
+        <div class="palette" style="visibility: hidden;">
+          <div data-shade="red" onclick="selectPaint(event)"></div>
+          <div data-shade="orange" onclick="selectPaint(event)"></div>
+          <div data-shade="yellow" onclick="selectPaint(event)"></div>
+          <div data-shade="green" onclick="selectPaint(event)"></div>
+          <div data-shade="teal" onclick="selectPaint(event)"></div>
+          <div data-shade="pink" onclick="selectPaint(event)"></div>
+          <div data-shade="purple" onclick="selectPaint(event)"></div>
+          <div data-shade="blue" onclick="selectPaint(event)"></div>
+          <div data-shade="cyan" onclick="selectPaint(event)"></div>
+          <div data-shade="gray" onclick="selectPaint(event)"></div>
+          <div data-shade="silver" onclick="selectPaint(event)"></div>
+          <div data-shade="brown" onclick="selectPaint(event)"></div>
+          <div data-shade="white" onclick="selectPaint(event)"></div>
+          <div data-shade="black" onclick="selectPaint(event)"></div>
+          <div data-shade="" onclick="selectPaint(event)"></div>
+        </div>        
       </button>
       <button id="tDelete" onclick="selectTool(event)">
         ${trash2}
@@ -71,6 +99,7 @@
         </div>
       </div>
     </div><!-- /content -->  
+    <!-- <img src="%assetPath%/3d_glasses.png" style="margin-left:200px"/> -->
 
 
     <script>/*%landingpage2.js%*/</script>

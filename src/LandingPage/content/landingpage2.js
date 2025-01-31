@@ -12,7 +12,7 @@ function getActiveTool()
 
 function selectTool(event)
 {
-  document.body.dataset['activeTool'] = event.target.id;
+  document.body.dataset['activeTool'] = event.target.closest('[id]').id;
   for(let button of document.querySelectorAll('#mainToolbar button'))
   {
     button.classList.toggle('active',(button.id===getActiveTool()));
@@ -99,7 +99,34 @@ function createGroup()
   vscode.postMessage({command:'createGroup'}); //raises syncModel with forceRebuild:true 
 }
 
+function togglePaintPicker()
+{
+  let palette = document.querySelector('#tPaint .palette');
+  console.log('palette', palette);
+  if (palette.style.visibility==='hidden') {palette.style.visibility='visible';}
+  else {palette.style.visibility='hidden';}
+}
 
+function selectPaint(event)
+{
+  let color = event.target.dataset['shade'];
+  let toolpreview = document.querySelector('#tPaint > .colorslot');
+  if (toolpreview)
+  {
+    toolpreview.dataset['shade']=color;
+    togglePaintPicker();
+  }
+}
+
+function getCurrentPaint()
+{
+  let toolpreview = document.querySelector('#tPaint > .colorslot');
+  if (toolpreview)
+  {
+    return toolpreview.dataset['shade'];
+  }
+  return undefined;
+}
 
 let draggingGUID=undefined;
 let draggingEl=undefined;
@@ -125,7 +152,7 @@ function stopdrag(event)
 {
   document.body.classList.remove('is-dragging','is-dragging-group');
   // console.log('stop drag',event);
-  draggingEl.classList.remove('dragged-item');//1st, because draggingEl might be reassigned when cloning a sealed item
+  draggingEl?.classList.remove('dragged-item');//1st, because draggingEl might be reassigned when cloning a sealed item
 
   let newGUID;
   if (draggingSealed) 
@@ -171,14 +198,14 @@ function stopdrag(event)
 }
 
 
-function modalHide(event)
-{
-  // console.log('modal hide',event);
-  document.querySelector('.modal').classList.add('hidden');
-}
+// function modalHide(event)
+// {
+//   // console.log('modal hide',event);
+//   document.querySelector('.modal').classList.add('hidden');
+// }
 
 /** Card which was right-clicked. */
-let contextCard = undefined;
+/*let contextCard = undefined;
 function modalPaletteShow(event)
 {
   contextCard = event.target.closest('[data-guid]');
@@ -202,7 +229,7 @@ function modalPaletteClick(event)
 
   // console.log("🔴 shade",contextCard.dataset['shade'],'into', event.target.dataset['shade']);
   contextCard=null;
-}
+}*/
 
 
 function setLayout(event, layoutClass, elGroup)
@@ -256,6 +283,16 @@ function clickProject(event)
       console.log('open()');
       guidProvider = event.target.closest('[data-guid]');
       if (guidProvider) {vscode.postMessage({command:'open',guid:guidProvider.dataset['guid']});}
+      else {alert('Cannot open, closest guid not found.');}
+      break;
+    case 'tPaint':
+      guidProvider = event.target.closest('[data-guid]');
+      if (guidProvider) 
+      {
+        let paint = getCurrentPaint();
+        guidProvider.dataset['shade']=paint;
+        vscode.postMessage({command:'patch',guid:guidProvider.dataset['guid'], field:'shade',value:paint});
+      }
       else {alert('Cannot open, closest guid not found.');}
       break;
     default:

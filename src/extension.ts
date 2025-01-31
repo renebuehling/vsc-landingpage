@@ -58,6 +58,8 @@ export function activate(context: vscode.ExtensionContext)
 
 			webviewPanel.iconPath = panelIconPath;
 
+			const assetPath:vscode.Uri = webviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src','assets'));
+
 			// const communication = new LandingPageCommunication();
 			// webviewPanel.onDidDispose(()=>{communication.dispose();});
 			// const model:LandingPageModel = JSON.parse(JSON.stringify(demoModel));
@@ -66,7 +68,7 @@ export function activate(context: vscode.ExtensionContext)
 
 			webviewPanel.webview.onDidReceiveMessage(async message => await handleMessageFromWebview(message, webviewPanel, model), undefined, context.subscriptions);
 			//webviewPanel.webview.html = new LandingPageBuilder().makeHTML(); // getWebviewContent(await gerRecentProjects(), context, webviewPanel);
-			webviewPanel.webview.html = new LandingPageTemplate2().makeHTML(); // getWebviewContent(await gerRecentProjects(), context, webviewPanel);
+			webviewPanel.webview.html = new LandingPageTemplate2().makeHTML(assetPath); // getWebviewContent(await gerRecentProjects(), context, webviewPanel);
 
 			importVscRecentList();
 

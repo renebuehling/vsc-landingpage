@@ -217,38 +217,7 @@ function stopdrag(event)
   draggingSealed=false;
 }
 
-
-
-
-/** Card which was right-clicked. */
-/*let contextCard = undefined;
-function modalPaletteShow(event)
-{
-  contextCard = event.target.closest('[data-guid]');
-  // console.log('modal palette SHOW',event,!contextCard?'NOT ContextCard':'HAS ContextCard');
-  if (!contextCard) {return;}
-  if (contextCard.closest('.sealed')) {return;} //.sealed in parent
-
-  document.querySelector('.modal').classList.remove('hidden');
-  let div = document.querySelector('.modal .palette');
-  div.style.left = (event.clientX) + 'px';
-  div.style.top = (event.clientY) + 'px';
-}
-function modalPaletteClick(event)
-{
-  // console.log('modal palette click',event,!contextCard?'NOT ContextCard':'HAS ContextCard');
-  if (!contextCard) {return;}
-
-  let pickedShade=event.target.dataset['shade'];
-  contextCard.dataset['shade']=pickedShade;
-  vscode.postMessage({command:'patch',guid:contextCard.dataset['guid'], field:'shade', value:pickedShade});
-
-  // console.log("🔴 shade",contextCard.dataset['shade'],'into', event.target.dataset['shade']);
-  contextCard=null;
-}*/
-
-
-function setLayout(event, layoutClass, elGroup)
+function setLayout(event, layoutClass, elGroup=undefined)
 {
   if (!elGroup) {elGroup = event.target.closest('[data-guid]');}
   
@@ -270,6 +239,16 @@ function setLayout(event, layoutClass, elGroup)
   }
   else { console.warn('elGroup nil',event,layoutClass,elGroup, elProjects);}
 }
+
+function toggleLayout(event)
+{
+  let elGroup = event.target.closest('[data-guid]');
+  let elProjects = elGroup.querySelector('.projects');
+
+  if (elProjects.classList.contains('grid')) {setLayout(event,'list');}
+  else {setLayout(event,'grid');}
+}
+
 
 function clickGroup(event)
 {

@@ -33,7 +33,7 @@
             <p>Click on bookmarks to apply a background color.</p>
           </span>
         </div>
-        <div class="colorslot" data-shade="red" >
+        <div class="colorslot" data-shade="" >
         </div>        
       </button>
       <button id="tDelete" onclick="selectTool(event)">
@@ -83,6 +83,7 @@
           <div class="tools hover-only">
             <button class="ifn-sealed" title="Add bookmark to file or workspace" onclick="createBookmark(event,false)">${plus} </button>
             <button class="ifn-sealed" title="Add bookmark to folder" onclick="createBookmark(event,true)">${folderPlus} </button>
+            <button title="Switch list/card layout" onclick="toggleLayout(event)">${layoutGrid} </button>
           </div>
         </div>
         <div class="projects grid">

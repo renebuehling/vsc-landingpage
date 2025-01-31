@@ -99,12 +99,32 @@ function createGroup()
   vscode.postMessage({command:'createGroup'}); //raises syncModel with forceRebuild:true 
 }
 
-function togglePaintPicker()
+function modalHide(event)
 {
-  let palette = document.querySelector('#tPaint .palette');
-  console.log('palette', palette);
-  if (palette.style.visibility==='hidden') {palette.style.visibility='visible';}
-  else {palette.style.visibility='hidden';}
+  // console.log('modal hide',event);
+  document.querySelector('.modal').classList.add('hidden');
+}
+
+function _showPaintPicker(event)
+{
+  document.querySelector('.modal').classList.remove('hidden');
+  let div = document.querySelector('.modal .palette');
+  div.style.left = (event.clientX) + 'px';
+  div.style.top = (event.clientY) + 'px';
+}
+
+function togglePaintPicker(event, forceVisibility=undefined)
+{
+  let modal = document.querySelector('.modal');
+
+  if (modal.classList.contains('hidden'))
+  {
+    _showPaintPicker(event);
+  }
+  else 
+  {
+    modalHide();
+  }
 }
 
 function selectPaint(event)
@@ -114,7 +134,7 @@ function selectPaint(event)
   if (toolpreview)
   {
     toolpreview.dataset['shade']=color;
-    togglePaintPicker();
+    modalHide();
   }
 }
 
@@ -198,11 +218,7 @@ function stopdrag(event)
 }
 
 
-// function modalHide(event)
-// {
-//   // console.log('modal hide',event);
-//   document.querySelector('.modal').classList.add('hidden');
-// }
+
 
 /** Card which was right-clicked. */
 /*let contextCard = undefined;

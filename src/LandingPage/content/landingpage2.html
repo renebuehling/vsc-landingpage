@@ -25,7 +25,7 @@
           <p>Click on bookmarks or groups to edit their display text.</p>
         </span>
       </button>
-      <button id="tPaint" onclick="selectTool(event)">
+      <button id="tPaint" onclick="selectTool(event); togglePaintPicker(event);">
         <div>
           ${paintbrush}
           <span class="tooltiptext">
@@ -33,24 +33,7 @@
             <p>Click on bookmarks to apply a background color.</p>
           </span>
         </div>
-        <div class="colorslot" data-shade="red" onclick="togglePaintPicker()" >
-        </div>
-        <div class="palette" style="visibility: hidden;">
-          <div data-shade="red" onclick="selectPaint(event)"></div>
-          <div data-shade="orange" onclick="selectPaint(event)"></div>
-          <div data-shade="yellow" onclick="selectPaint(event)"></div>
-          <div data-shade="green" onclick="selectPaint(event)"></div>
-          <div data-shade="teal" onclick="selectPaint(event)"></div>
-          <div data-shade="pink" onclick="selectPaint(event)"></div>
-          <div data-shade="purple" onclick="selectPaint(event)"></div>
-          <div data-shade="blue" onclick="selectPaint(event)"></div>
-          <div data-shade="cyan" onclick="selectPaint(event)"></div>
-          <div data-shade="gray" onclick="selectPaint(event)"></div>
-          <div data-shade="silver" onclick="selectPaint(event)"></div>
-          <div data-shade="brown" onclick="selectPaint(event)"></div>
-          <div data-shade="white" onclick="selectPaint(event)"></div>
-          <div data-shade="black" onclick="selectPaint(event)"></div>
-          <div data-shade="" onclick="selectPaint(event)"></div>
+        <div class="colorslot" data-shade="red" >
         </div>        
       </button>
       <button id="tDelete" onclick="selectTool(event)">
@@ -71,6 +54,25 @@
           <p>Click to add a new group for bookmark storage. Use Move Tool to change its order afterwards.</p>
         </span>
       </button>
+    </div><!-- tb -->
+    <div class="modal hidden" onpointerup="modalHide(event)">
+      <div class="palette">
+        <div data-shade="red" onclick="selectPaint(event)"></div>
+        <div data-shade="orange" onclick="selectPaint(event)"></div>
+        <div data-shade="yellow" onclick="selectPaint(event)"></div>
+        <div data-shade="green" onclick="selectPaint(event)"></div>
+        <div data-shade="teal" onclick="selectPaint(event)"></div>
+        <div data-shade="pink" onclick="selectPaint(event)"></div>
+        <div data-shade="purple" onclick="selectPaint(event)"></div>
+        <div data-shade="blue" onclick="selectPaint(event)"></div>
+        <div data-shade="cyan" onclick="selectPaint(event)"></div>
+        <div data-shade="gray" onclick="selectPaint(event)"></div>
+        <div data-shade="silver" onclick="selectPaint(event)"></div>
+        <div data-shade="brown" onclick="selectPaint(event)"></div>
+        <div data-shade="white" onclick="selectPaint(event)"></div>
+        <div data-shade="black" onclick="selectPaint(event)"></div>
+        <div data-shade="" onclick="selectPaint(event)"></div>
+      </div>
     </div>
     <div class="content col">
       <div data-prototype data-guid="" class="group">

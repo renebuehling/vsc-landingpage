@@ -200,57 +200,70 @@
         visibility: visible;
       }
     }
+  }
 
-    .colorslot
+  .colorslot
+  {
+    position: absolute;
+    bottom:0;
+    right:0;
+
+    width: var(--gapspace-s);
+    height: var(--gapspace-s);
+  }
+
+  .colorslot, div[data-shade]
+  {
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    cursor: pointer;        
+    background-color:var(--shade-color);
+
+    &[data-shade=""] // "clear" slot
     {
-      position: absolute;
-      bottom:0;
-      right:0;
-
-      width: var(--gapspace-s);
-      height: var(--gapspace-s);
+      background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.3) 5.56%, transparent 5.56%, transparent 50%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.3) 55.56%, transparent 55.56%, transparent 100%);
+      background-size: 4px 4px;
     }
+  }
+  .palette
+  {
+    position: absolute;
+    border: 1px solid var(--vscode-menu-border);
+    min-width: 4px;
+    min-height: 4px;
+    background-color: var(--vscode-menu-background);
+    box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
+    top: 20px;
+    left: 20px;
+    border-radius: var(--corner);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: var(--gapspace-s);
+    padding: var(--gapspace-s);
 
-    .colorslot, div[data-shade]
+    width: calc((var(--gapspace) + var(--gapspace-s))* 5 + 2px); //(color slot width + gap) * numberOfSlotsPerLine + paletteBorder
+    div[data-shade]
     {
-      border-radius: 50%;
-      border: 1px solid rgba(0, 0, 0, 0.3);
-      cursor: pointer;        
-      background-color:var(--shade-color);
-
-      &[data-shade=""] // "clear" slot
-      {
-        background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.3) 5.56%, transparent 5.56%, transparent 50%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.3) 55.56%, transparent 55.56%, transparent 100%);
-        background-size: 4px 4px;
-      }
-    }
-    .palette
-    {
-      position: absolute;
-      border: 1px solid var(--vscode-menu-border);
-      min-width: 4px;
-      min-height: 4px;
-      background-color: var(--vscode-menu-background);
-      box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
-      top: 20px;
-      left: 20px;
-      border-radius: var(--corner);
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-      gap: var(--gapspace-s);
-      padding: var(--gapspace-s);
-
-      width: calc((var(--gapspace) + var(--gapspace-s))* 5 + 2px); //(color slot width + gap) * numberOfSlotsPerLine + paletteBorder
-      div[data-shade]
-      {
-        width: var(--gapspace);
-        height: var(--gapspace);
-        cursor: pointer;
-      }
+      width: var(--gapspace);
+      height: var(--gapspace);
+      cursor: pointer;
     }
   }
 
+  .modal
+  {
+    position: fixed;
+    left:calc(var(--buttonsize) + (2 * var(--gapspace-s)) + 1px); 
+    right:0; top:0; bottom:0;
+    background-color: rgba(255,255,255,0.5);
+    z-index: 98;
+
+    &.hidden
+    {
+      display:none;
+    }
+  }
 
 
   .content

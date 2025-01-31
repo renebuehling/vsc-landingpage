@@ -50,3 +50,4 @@ yarn.lock
 
 # Optional build cache
 .cache/
+*.afphoto~lock~

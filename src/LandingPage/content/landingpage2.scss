@@ -87,7 +87,7 @@
   &[data-active-tool="tPaint"]
   {
     .group { .group-label{ cursor:not-allowed; } }
-    .group:not(.sealed) { .project{ cursor:url(%assetPath%/3d_glasses.png), auto; border:1px dashed var(--accent-color);} }
+    .group:not(.sealed) { .project{ cursor:url(%assetPath%/cursor-paint.png), auto; border:1px dashed var(--accent-color);} }
   } 
 
   .lucide

@@ -1,6 +1,8 @@
-# vsc-landingpage README
+# Landingpage
 
-This is the README for your extension "vsc-landingpage". After writing up a brief description, we recommend including the following sections.
+Use this extension to create and organise bookmarks to folders, files and workspaces in a personal startup page. VS Code's default *recently used* list is a strict temporal list without reflecting your personal working status. But you might want to keep shortcuts to your currently active projects still in sight even when you work on other things for a while.
+
+Landingpage extension shows both, VS code's recently used files and folders as well as custom bookmarks which can be organised in groups, renamed, ordered and colorized. 
 
 ## Features
 

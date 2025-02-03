@@ -7,7 +7,7 @@ import { parseURI } from './utils';
 
 interface MessageFromWebview
 {
-	command:'documentReady'|'rename'|'createBookmark'|'createGroup'|'remove'|'open'|'move'|'patch';
+	command:'documentReady'|'rename'|'createBookmark'|'createGroup'|'remove'|'open'|'move'|'patch'|'openSettings';
 
 	//text?:string;
   /** GUID value of model fragment this command refers to. */
@@ -268,6 +268,9 @@ interface MessageToWebview
         {
           console.warn(`Patch field not supported for key ${message.field}.`);
         }
+        break;
+      case 'openSettings':
+        vscode.commands.executeCommand('workbench.action.openSettings', 'vsc-landingpage');
         break;
       default:
         console.log('Unhandled message from webview: ',message);

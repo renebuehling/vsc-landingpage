@@ -26,11 +26,13 @@ export function activate(context: vscode.ExtensionContext)
 	// });
 	// context.subscriptions.push(disposable);
 
-	const disposable = vscode.commands.registerCommand('vsc-landingpage.setColor', (...args) => {
-		console.log('💧 Set Color',args);
-		vscode.window.showWarningMessage('💧 Set color');
-	});
-	context.subscriptions.push(disposable);
+	// const disposable = vscode.commands.registerCommand('vsc-landingpage.setColor', (...args) => {
+	// 	console.log('💧 Set Color',args);
+	// 	vscode.window.showWarningMessage('💧 Set color');
+	// });
+	// context.subscriptions.push(disposable);
+
+	console.log(`Creating cmdShowWelcomePage:`);
 
 	const cmdShowWelcomePage = vscode.commands.registerCommand('vsc-landingpage.showWelcomePage', async() => 
 	{
@@ -74,18 +76,22 @@ export function activate(context: vscode.ExtensionContext)
 
 			
 		} catch (err: any) {
-				// Logger.GetInstance().log(`Exception opening extension at path: ${JSON.stringify(err.message)}`);
+			//Logger.GetInstance().log(`Exception opening extension at path: ${JSON.stringify(err.message)}`);
 		}
 		
 
 		//vscode.window.showInformationMessage('Starting the Landinpage');
 	});
 	context.subscriptions.push(cmdShowWelcomePage);
-
-
+	
+	
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
 	console.log('vsc-landingpage is now active!');
+	if (vscode.workspace.getConfiguration('vsc-landingpage').get<boolean>('autoshowOnStartup')===true && !vscode.workspace.workspaceFolders)
+	{
+		vscode.commands.executeCommand('vsc-landingpage.showWelcomePage');
+	}
 }
 
 // This method is called when your extension is deactivated

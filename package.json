@@ -9,7 +9,7 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [ "onStartupFinished" ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
@@ -17,7 +17,19 @@
         "command": "vsc-landingpage.showWelcomePage",
         "title": "Show Landing Page"
       }
-    ]
+    ],
+    "configuration": 
+    {
+      "title": "Landingpage",
+      "properties": {
+        "vsc-landingpage.autoshowOnStartup": 
+        {
+          "type": "boolean",
+          "default": true,
+          "description": "Open Landingpage automatically in empty windows."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

@@ -391,6 +391,11 @@ window.addEventListener('message', event =>
   }
 });
 
+function openSettings()
+{
+  vscode.postMessage({command:'openSettings'});
+}
+
 
 (function() 
 {

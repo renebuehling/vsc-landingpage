@@ -90,6 +90,11 @@
     .group:not(.sealed) { .project{ cursor:url(%assetPath%/cursor-paint.png), auto; border:1px dashed var(--accent-color);} }
   } 
 
+  .sealed .ifn-sealed 
+  {
+    display: none !important;
+  }
+
   .lucide
   {
     width: 19px;

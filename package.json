@@ -1,7 +1,7 @@
 {
   "name": "vsc-landingpage",
-  "displayName": "vsc-landingpage",
-  "description": "Welcome page with project bookmark manager.",
+  "displayName": "Landingpage",
+  "description": "Welcome page with customizable project bookmarks.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.96.0"
@@ -9,6 +9,14 @@
   "categories": [
     "Other"
   ],
+  "keywords": ["start","welcome","bookmarks","projects","workbench"],
+  "publisher": "renebuehling",
+  "icon": "assets/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/renebuehling/vsc-landingpage"
+  },
+  "pricing": "Free",
   "activationEvents": [ "onStartupFinished" ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -16,8 +24,30 @@
       {
         "command": "vsc-landingpage.showWelcomePage",
         "title": "Show Landing Page"
+      },
+      {
+        "command": "vsc-landingpage.reset",
+        "title": "Reset/Delete Landingpage Contents"
+      },
+      {
+        "command": "vsc-landingpage.reload",
+        "title": "Reload Landingpage",
+        "when": "activeWebviewPanelId == 'vsc-landingpage'"
       }
     ],
+    "menus": 
+    {
+      "editor/title": [
+        {
+          "command": "vsc-landingpage.reset",
+          "when": "activeWebviewPanelId == 'vsc-landingpage'"
+        },
+        {
+          "command": "vsc-landingpage.reload",
+          "when": "activeWebviewPanelId == 'vsc-landingpage'"
+        }        
+      ]
+    },
     "configuration": 
     {
       "title": "Landingpage",

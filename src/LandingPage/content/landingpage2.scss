@@ -47,7 +47,7 @@
   } 
   &[data-active-tool="tDelete"]
   {
-    .group:not(.sealed) { .group-label, .project{ cursor:crosshair; border:1px dashed var(--danger-color);} }
+    .group:not(.sealed) { .group-label, .project{ cursor:url(%assetPath%/cursor-delete.png), auto; border:1px dashed var(--danger-color);} }
     .group.sealed { cursor: not-allowed;  > * { pointer-events: none; } }
   } 
   &[data-active-tool="tMove"]
@@ -489,6 +489,7 @@
         background:var(--shade-color);
         color: var(--shade-foreground);
         button {color:var(--shade-foreground);}
+        border:none; 
 
         &:hover
         {

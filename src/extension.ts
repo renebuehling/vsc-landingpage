@@ -1,20 +1,20 @@
 // The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import { join } from 'path';
 import * as vscode from 'vscode';
 import { window } from 'vscode';
-import { LandingPageTemplate } from './LandingPage/LandingPageTemplate';
-import { handleMessageFromWebview, registerContext } from './LandingPage/communication';
-import { demoModel, LandingPageModel } from './LandingPage/LandingPageModel';
+import { handleMessageFromWebview, registerContext, resetModel, syncModelInWebview } from './LandingPage/communication';
+import { LandingPageModel } from './LandingPage/LandingPageModel';
 import { importVscRecentList } from './LandingPage/history';
 import { LandingPageTemplate2 } from './LandingPage/LandingPageTemplate2';
-
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) 
 {
 	registerContext(context);
+
+	let landingpageWebviewPanel:vscode.WebviewPanel|null = null;
+	let model:LandingPageModel = {groups:[]};
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -26,29 +26,45 @@ export function activate(context: vscode.ExtensionContext)
 	// });
 	// context.subscriptions.push(disposable);
 
-	// const disposable = vscode.commands.registerCommand('vsc-landingpage.setColor', (...args) => {
-	// 	console.log('💧 Set Color',args);
-	// 	vscode.window.showWarningMessage('💧 Set color');
-	// });
-	// context.subscriptions.push(disposable);
+	const cmdReset = vscode.commands.registerCommand('vsc-landingpage.reset', (...args) => {
+		console.log('vsc-landingpage.reset',args);
+		vscode.window.showWarningMessage("Reset content of landingpage? This will remove all custom bookmarks and groups. This cannot be undone.", "Yes", "No")
+							.then(answer => { if (answer === "Yes") { 
+								resetModel(model).then(()=>{
+									if (landingpageWebviewPanel) {syncModelInWebview(landingpageWebviewPanel!, model);}
+								});								
+							 }});
+	});
+	context.subscriptions.push(cmdReset);
 
-	console.log(`Creating cmdShowWelcomePage:`);
+	const cmdReload = vscode.commands.registerCommand('vsc-landingpage.reload', (...args) => {
+		console.log('vsc-landingpage.reload',args);
+		// vscode.window.showWarningMessage("Reset content of landingpage? This will remove all custom bookmarks and groups. This cannot be undone.", "Yes", "No")
+		// 					.then(answer => { if (answer === "Yes") { 
+		// 						resetModel(model);
+		// 					 }});
+		if (landingpageWebviewPanel) {syncModelInWebview(landingpageWebviewPanel!, model);}
+	});
+	context.subscriptions.push(cmdReload);
+
+	//console.log(`Creating vsc-landingpage.showWelcomePage`);
 
 	const cmdShowWelcomePage = vscode.commands.registerCommand('vsc-landingpage.showWelcomePage', async() => 
 	{
 		try 
 		{
-			// if (isTabInstanceOpen()) 
-			// {
-			// 	return;
-			// };
+			if (landingpageWebviewPanel)
+			{
+				landingpageWebviewPanel.reveal();
+				return;
+			}
 
 			const panelIconPath = {
 					light: vscode.Uri.file(join(context.extensionPath, 'assets', 'icon.png')),
 					dark: vscode.Uri.file(join(context.extensionPath, 'assets',  'icon.png'))
 			};
 
-			const webviewPanel = window.createWebviewPanel(
+			landingpageWebviewPanel = window.createWebviewPanel(
 					'vsc-landingpage',
 					'Landingpage',
 					vscode.ViewColumn.One,
@@ -58,35 +74,36 @@ export function activate(context: vscode.ExtensionContext)
 					}
 			);
 
-			webviewPanel.iconPath = panelIconPath;
+			landingpageWebviewPanel.iconPath = panelIconPath;
 
-			const assetPath:vscode.Uri = webviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src','assets'));
+			/** Webview-accessible path to src/assets which is for example required to load custom cursors.  */
+			const assetPath:vscode.Uri = landingpageWebviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src','assets'));
 
 			// const communication = new LandingPageCommunication();
 			// webviewPanel.onDidDispose(()=>{communication.dispose();});
 			// const model:LandingPageModel = JSON.parse(JSON.stringify(demoModel));
 			// model.groups[0].label='ModelX!';
-			const model:LandingPageModel = context.globalState.get<LandingPageModel>('landingPageModel')|| {groups:[]};
 
-			webviewPanel.webview.onDidReceiveMessage(async message => await handleMessageFromWebview(message, webviewPanel, model), undefined, context.subscriptions);
-			//webviewPanel.webview.html = new LandingPageBuilder().makeHTML(); // getWebviewContent(await gerRecentProjects(), context, webviewPanel);
-			webviewPanel.webview.html = new LandingPageTemplate2().makeHTML(assetPath); // getWebviewContent(await gerRecentProjects(), context, webviewPanel);
+			model = context.globalState.get<LandingPageModel>('landingPageModel')|| {groups:[]};
 
-			importVscRecentList();
+			landingpageWebviewPanel.webview.onDidReceiveMessage(async message => await handleMessageFromWebview(message, landingpageWebviewPanel!, model), undefined, context.subscriptions);
+			landingpageWebviewPanel.webview.html = new LandingPageTemplate2().makeHTML(assetPath); // getWebviewContent(await gerRecentProjects(), context, webviewPanel);
 
+			landingpageWebviewPanel.onDidDispose(()=>{landingpageWebviewPanel=null;});
+
+			importVscRecentList(); //refresh VS Code's mru items
 			
-		} catch (err: any) {
-			//Logger.GetInstance().log(`Exception opening extension at path: ${JSON.stringify(err.message)}`);
 		}
-		
+		catch (err: any) 
+		{
+			console.error(`vsc-landingpage: Exception opening extension: ${JSON.stringify(err.message)}`);
+		}
 
 		//vscode.window.showInformationMessage('Starting the Landinpage');
 	});
 	context.subscriptions.push(cmdShowWelcomePage);
 	
 	
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-  // This line of code will only be executed once when your extension is activated
 	console.log('vsc-landingpage is now active!');
 	if (vscode.workspace.getConfiguration('vsc-landingpage').get<boolean>('autoshowOnStartup')===true && !vscode.workspace.workspaceFolders)
 	{

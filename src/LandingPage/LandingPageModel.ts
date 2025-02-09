@@ -5,6 +5,8 @@ export interface LandingPageModel
 {
   /** List of group declarations. */
   groups:LandingPageGroup[];
+
+  // 🔺 Reminder: also review extension.ts:resetModel() if LandingPageModel is changed.
 }
 
 /** Super interface for all elements that can be identified via a unique identifier. */

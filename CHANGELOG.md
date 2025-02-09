@@ -22,5 +22,18 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Color picker for cards
 - Card and List layouts for groups
 - Display of recent elements from VS Code 
+- Delete/Reset Landingpage
 
 //TODO: documentation;
+
+<!--
+Future plans:
+
+- Custom icon or image, esp. on cards
+- Filter and/or sorting
+- Export/Import landingpage model
+
+
+
+
+-->

@@ -57,47 +57,82 @@ Use drag and drop in move mode to customize the order to your needs:
 
 #### Rename Bookmarks and Groups
 
-Bookmark and Group labels are freely customizable texts. 
+Labels of bookmarks and groups are initialized with the name of the linked file or folder, but they are freely customizable display texts. To rename the display text of bookmarks or groups in Landingpage:
 
-//HACK: Next: continue documentation of rename, then colorize
+- Select Rename tool in toolbar.
+- Click on a bookmark or group name.
+- Enter a new name in popup.
+
+![Rename groups or bookmarks](doc/img/rename.gif)
+
+> **Group *Recent* is read-only.** Labels of bookmarks or the Recent group itself are detected automatically and cannot be changed. See also: [Understanding 'Recent'](#recent)
+
+
+#### Colorizing Bookmarks and Groups
+
+Use paint tool to change the color shade of bookmarks:
+
+- Select Paint tool in toolbar.
+- Pick a color from palette popup. Click outside the popup to close it to keep currently selected color.
+- Click on bookmarks to change their color.
+
+**To remove coloring:**
+
+- From palette popup select lined slot which represents transparency.
+- Click on the bookmarks to remove their coloring.
+
+![Colorize groups](doc/img/paint.gif)
+
+> **Group *Recent* is read-only.** Color of bookmarks in Recent list cannot be changed. See also: [Understanding 'Recent'](#recent)
+
+
+#### Switch List or Grid Layout
+
+Bookmarks can be rendered as big cards or as small list. Cards are visually dominant and may be used for your important favorites. Lists are useful to show a group of many bookmarks in efficient way. To change the layout of a group, use the groups layout button: 
+
+- Hover over a group name.
+- Click Layout button to change the layout of bookmarks in this group.
+
+![Change layout](doc/img/change-layout.gif)
+
+> **Group *Recent* can be changed, too!** It **is** possible to change layout of Recent group, because this is just a view setting independent from the VS Code data source. See also: [Understanding 'Recent'](#recent)
 
 
 ### Remove items per Delete Tool
 
+Groups and bookmarks can be removed from Landingpage. The original linked target stays untouched. Note that deletion is not revertable.
+
+- Select Remove tool from toolbar. 
+- Click on bookmarks or groups that you want to delete.
+- Confirm popup to remove the element from Landingpage.
+
+> **Tip:** Hold `Ctrl` while clicking to skip confirmation dialog and delete the element immediately.
+
+![Remove items](doc/img/remove.gif)
+
+> **Group *Recent* is read-only.** Neither bookmarks nor the group itself can be removed. See also: [Understanding 'Recent'](#recent)
 
 <a name="recent"></a>
 
-
 ### Understanding *Recent* Group
 
+"Recent" group is a collection of bookmarks that behaves similiar to user created groups, but it is populated automatically. Therefore all changes would be lost on update which is why most editing is locked here. 
 
+"Recent" bookmarks are refreshed whenever Welcome page is reopened or when Reset-Command is called from Landingpage View's "..." menu.
 
+### Support for Dark Theme
 
+Landingpage works with light and dark theme:
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+![Dark Theme Support](doc/img/darktheme.gif)
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+* `vsc-landingpage.autoshowOnStartup`: Enable/disable automatic opening of Landingpage in empty windows.
 
-## Known Issues
+<!-- ## Known Issues
 
 Calling out known issues can help limit users opening duplicate issues against your extension.
 
@@ -115,33 +150,10 @@ Fixed issue #.
 
 ### 1.1.0
 
-Added features X, Y, and Z.
+Added features X, Y, and Z. -->
 
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
-
-
-
+<!-- 
 ## Build local .vsix file
 
-`vsce package` oder npm package script.
+`vsce package` oder npm package script. 
+-->

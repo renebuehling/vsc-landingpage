@@ -2,9 +2,9 @@
 
 All notable changes to the "vsc-landingpage" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+<!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
-## [Unreleased]
+## [0.0.1] - 2025-02-10
 
 - Initial release
 
@@ -24,7 +24,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Display of recent elements from VS Code 
 - Delete/Reset Landingpage
 
-//TODO: documentation;
 
 <!--
 Future plans:
@@ -32,8 +31,9 @@ Future plans:
 - Custom icon or image, esp. on cards
 - Filter and/or sorting
 - Export/Import landingpage model
-
-
+- Renameable Recent Group
+- Custom colors
+- Collapse/Expand
 
 
 -->

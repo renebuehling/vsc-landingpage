@@ -161,6 +161,7 @@
       width:var(--buttonsize);
       height:var(--buttonsize);
       position: relative; //relevant for tooltip
+      color: var(--vscode-activityBar-foreground); //https://code.visualstudio.com/api/references/theme-color#activity-bar
 
       &.active
       {

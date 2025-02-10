@@ -4,6 +4,13 @@ All notable changes to the "vsc-landingpage" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [0.0.2] - 2025-02-10
+
+### Fixed
+
+- Quick basic fix for toolbar icon colors which now use `--vscode-activityBar-foreground` to work with color themes.
+
+
 ## [0.0.1] - 2025-02-10
 
 - Initial release

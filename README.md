@@ -153,7 +153,8 @@ Fixed issue #.
 Added features X, Y, and Z. -->
 
 <!-- 
-## Build local .vsix file
 
-`vsce package` oder npm package script. 
+Build notes see DEVELOP.md
+
+
 -->

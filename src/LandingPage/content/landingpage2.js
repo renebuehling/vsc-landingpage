@@ -82,6 +82,7 @@ function addProject(landingPageProject, elGroup)
   //   labeled.innerHTML = svg;
 
   elGroup.querySelector('.projects').appendChild( newPro );
+  applyFilter();
   return newPro;
 }
 
@@ -387,13 +388,49 @@ window.addEventListener('message', event =>
           el.remove();
         }
       });
+      if (message.model.viewState?.recentFilterText)
+      { 
+        _recentFilterText = message.model.viewState.recentFilterText; 
+        document.getElementById('filterinput').value = message.model.viewState.recentFilterText;
+      }      
+      applyFilter(); 
       break;
+    case 'setFocusToFilterInput':
+      const input = document.querySelector('#filterinput');
+      input?.focus();
+      break;
+    default:
+      console.warn('Unknown command',message.command);      
   }
 });
 
 function openSettings()
 {
   vscode.postMessage({command:'openSettings'});
+}
+
+let _recentFilterText='';
+
+/**
+ * Refresh the view filter any time.
+ * @param {string|Event|undefined} eventOrText - The input event of the textfield or the literal filter text as string. If omitted, the recently applied filter text is used again.
+ */
+function applyFilter(eventOrText)
+{
+  let filtertext='';
+  if (eventOrText===undefined) {filtertext=_recentFilterText;}  
+  else 
+  {
+    if (typeof eventOrText === 'string') {filtertext = eventOrText;}
+    else {filtertext = eventOrText.target.value;}
+    _recentFilterText = filtertext;
+    vscode.postMessage({command:'setViewState', field:'recentFilterText', value:filtertext});
+  }
+
+  for(let elProject of document.querySelectorAll('.project:not([data-prototype])'))
+  {
+    elProject.classList.toggle('hidden-by-filter', !elProject.innerText.toLowerCase().includes(filtertext.toLowerCase()));
+  }  
 }
 
 

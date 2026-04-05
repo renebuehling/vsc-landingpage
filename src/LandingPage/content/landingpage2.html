@@ -81,6 +81,18 @@
         <div data-shade="" onclick="selectPaint(event)"></div>
       </div>
     </div>
+    <div class="searchbar">
+      <div class="inputfield">        
+        <input id="filterinput" type="text" placeholder="Filter bookmarks... Ctrl/Cmd+F" oninput="applyFilter(event)" />
+        <button onclick="document.getElementById('filterinput').value = ''; applyFilter(event); document.getElementById('filterinput').focus();">
+          ${clear} 
+          <span class="tooltiptext centered">
+            <h1>🔍 Clear Filter</h1>
+            <p>Remove the filter text and show everything.</p>
+          </span>
+        </button>        
+      </div>
+    </div>
     <div class="content col">
       <div data-prototype data-guid="" class="group">
         <div class="dragup"></div>

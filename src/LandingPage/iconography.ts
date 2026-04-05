@@ -32,5 +32,7 @@ export const icons=
   squareMousePointer : require('lucide-static/icons/square-mouse-pointer.svg'),
   move : require('lucide-static/icons/move.svg'),
   settings : require('lucide-static/icons/settings.svg'),
+
+  clear : require('lucide-static/icons/x.svg')
   
 }; 

@@ -6,7 +6,12 @@ export interface LandingPageModel
   /** List of group declarations. */
   groups:LandingPageGroup[];
 
-  // 🔺 Reminder: also review extension.ts:resetModel() if LandingPageModel is changed.
+  /** 
+   * Dictionary for storing view state information, e.g. current filter keyword.
+   */
+  viewState?: {[key: string]: any};
+
+  // 🔺 Reminder: also review communication.ts:resetModel() if LandingPageModel is changed.
 }
 
 /** Super interface for all elements that can be identified via a unique identifier. */

@@ -4,6 +4,15 @@ All notable changes to the "vsc-landingpage" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [0.0.3] - 2026-04-04
+
+### Added
+
+- *Show Landingpage* appears in command palette now.
+- Filter input field allows to highlight elements with keyword search.
+![Filter Highlight](doc/img/filter.gif)
+
+
 ## [0.0.2] - 2025-02-10
 
 ### Fixed

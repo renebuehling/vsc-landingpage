@@ -167,45 +167,6 @@
       {
         background-color: var(--vscode-toolbar-hoverBackground);
       }
-
-      svg, > .tooltiptext {pointer-events: none; } //avoid that event.target is the button's content instead of the button itself
-
-      .tooltiptext
-      {
-        visibility: hidden;
-        max-width: 250px;
-        width: max-content; 
-        background-color: var(--vscode-activityBar-background);
-        border:1px solid var(--vscode-activityBar-border);
-        box-shadow: 0px 4px 8px rgba(0,0,0,0.3);        
-        border-radius: var(--corner);
-        padding: var(--gapspace-s);                
-
-        text-align: left;
-        font-family: Segoe WPC, Segoe UI, sans-serif;
-        font-size: smaller;
-
-        h1
-        {
-          padding:0; margin:0;
-          font-size: small;
-          light {font-weight: lighter;}
-        }
-        p:last-child
-        {
-          margin-bottom: 0; //otherwise the p's margin will add to tooltip's padding and make the gap too big
-        }
-      
-        /* Position the tooltip */
-        position: absolute;
-        // z-index: 1;
-        left: calc( var(--buttonsize) + var(--ctrlspace));
-        top: calc( var(--buttonsize) + var(--ctrlspace));
-      }
-      &:hover .tooltiptext 
-      {
-        visibility: visible;
-      }
     }
   }
 
@@ -272,12 +233,67 @@
     }
   }
 
+  .searchbar
+  {
+    position: fixed;
+    left: calc( var(--buttonsize) + (2 * var(--gapspace-s)) );
+    top: 0;
+    right: 0;
+    height: var(--buttonsize);
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-editor-foreground);
+    padding: var(--gapspace-s);
+    // border-right: 1px solid var(--vscode-activityBar-border);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap:var(--ctrlspace);
+    z-index: 99;
+
+
+    .inputfield
+    {
+      outline: 1px solid var(--vscode-editorWidget-border);
+      box-shadow: 0 2px 5px 0 #9393932e;
+      border-radius: var(--corner);
+      background:var(--shade-color);
+      color: var(--shade-foreground);
+      border:none; 
+      padding: var(--ctrlspace);
+      font-family: var(--vscode-font-family);
+      font-size: var(--vscode-font-size);
+      button {color:var(--shade-foreground);}
+
+      display:flex;
+      flex-direction: row;
+    
+      &:hover, &:focus, &:focus-within
+      {
+        outline-color: var(--accent-color);
+      }
+
+      input, input:active, input:focus
+      {
+        border: none;
+        outline: none;
+        margin: 0; 
+      }
+
+      input::placeholder 
+      {
+        color: var(--vscode-input-placeholderForeground);
+        font-size:smaller;
+      }
+    }
+  }
+
 
   .content
   {
     position: absolute;
     left:calc(var(--buttonsize) + (2 * var(--gapspace-s)) + 1px);
-    top:0;
+    top:calc(var(--buttonsize) + (2 * var(--gapspace-s)) + 1px);
     right:0;
     height: auto;
     // outline: 1px dotted fuchsia;
@@ -488,7 +504,7 @@
       }
 
       // all layouts:
-      .project //card
+      .project 
       {        
         outline: 1px solid var(--vscode-editorWidget-border);
         box-shadow: 0 2px 5px 0 #9393932e;
@@ -539,9 +555,67 @@
           border-right: calc(  0.25 * var(--gapspace) ) solid transparent;
           margin-right: calc( -0.625 * var(--gapspace) );
         }
+
+        &.hidden-by-filter
+        {
+          opacity: .3;
+          filter: saturate(0.5);
+        }
       }
     }
   }
+
+
+  button
+  {
+    position: relative; //required for tooltip
+    svg, > .tooltiptext {pointer-events: none; } //avoid that event.target is the button's content instead of the button itself
+
+    .tooltiptext
+    {
+      visibility: hidden;
+      max-width: 250px;
+      width: max-content; 
+      background-color: var(--vscode-activityBar-background);
+      border:1px solid var(--vscode-activityBar-border);
+      color: var(--vscode-activityBar-foreground);
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.3);        
+      border-radius: var(--corner);
+      padding: var(--gapspace-s);                
+
+      text-align: left;
+      font-family: Segoe WPC, Segoe UI, sans-serif;
+      font-size: smaller;
+
+      h1
+      {
+        padding:0; margin:0;
+        font-size: small;
+        light {font-weight: lighter;}
+      }
+      p:last-child
+      {
+        margin-bottom: 0; //otherwise the p's margin will add to tooltip's padding and make the gap too big
+      }
+    
+      /* Position the tooltip, default: left-align */
+      position: absolute;
+      // z-index: 1;
+      left: calc( var(--buttonsize) + var(--ctrlspace));
+      top: calc( var(--buttonsize) + var(--ctrlspace));
+ 
+      &.centered  // explicitly centered
+      {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+    &:hover .tooltiptext 
+    {
+      visibility: visible;
+    }
+  }//button
+  
 
 } //.landingpage
 

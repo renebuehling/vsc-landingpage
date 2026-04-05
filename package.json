@@ -2,7 +2,7 @@
   "name": "vsc-landingpage",
   "displayName": "Landingpage",
   "description": "Welcome page with customizable project bookmarks.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -17,7 +17,7 @@
     "url": "https://github.com/renebuehling/vsc-landingpage"
   },
   "pricing": "Free",
-  "activationEvents": [ "onStartupFinished" ],
+  "activationEvents": ["*", "onStartupFinished" ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
@@ -35,6 +35,14 @@
         "when": "activeWebviewPanelId == 'vsc-landingpage'"
       }
     ],
+    "keybindings": [
+      {
+        "command": "vsc-landingpage.focusInput",
+        "key": "ctrl+f",
+        "mac": "cmd+f",
+        "when": "activeWebviewPanelId == 'vsc-landingpage'" 
+      }
+    ],
     "menus": 
     {
       "editor/title": [
@@ -48,6 +56,12 @@
         }        
       ]
     },
+    "commandPalette": [
+        {
+          "command": "vsc-landingpage.showWelcomePage",
+          "when": "true"
+        }
+    ],
     "configuration": 
     {
       "title": "Landingpage",

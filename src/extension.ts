@@ -102,6 +102,12 @@ export function activate(context: vscode.ExtensionContext)
 		//vscode.window.showInformationMessage('Starting the Landinpage');
 	});
 	context.subscriptions.push(cmdShowWelcomePage);
+
+	context.subscriptions.push(
+			vscode.commands.registerCommand('vsc-landingpage.focusInput', () => {
+				if (landingpageWebviewPanel) {landingpageWebviewPanel.webview.postMessage({ command: 'setFocusToFilterInput' });}
+			})
+	);
 	
 	
 	console.log('vsc-landingpage is now active!');

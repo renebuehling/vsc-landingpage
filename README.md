@@ -53,6 +53,13 @@ Use drag and drop in move mode to customize the order to your needs:
 
 > **Group *Recent* is read-only.** You can drag bookmarks *from* Recent *to* other groups, but not the other way around. The order of bookmarks within Recent group cannot be changed. See also: [Understanding 'Recent'](#recent)
 
+### Filter View
+
+Use filter input field to emphasize bookmarks by keyword matching. 
+
+![Filter Highlight](doc/img/filter.gif)
+
+
 ### Customize Appearance
 
 #### Rename Bookmarks and Groups

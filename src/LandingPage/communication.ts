@@ -8,7 +8,7 @@ import { parseURI } from './utils';
  */
 interface MessageFromWebview
 {
-	command:'documentReady'|'rename'|'createBookmark'|'createGroup'|'remove'|'open'|'move'|'patch'|'openSettings';
+	command:'documentReady'|'rename'|'createBookmark'|'createGroup'|'remove'|'open'|'move'|'patch'|'openSettings'|'setViewState';
 
 	//text?:string;
   /** GUID value of model fragment this command refers to. */
@@ -109,6 +109,7 @@ async function populateVscMru(sharedModel:LandingPageModel):Promise<void>
 export async function resetModel(sharedModel:LandingPageModel):Promise<void>
 {
   sharedModel.groups=[];
+  sharedModel.viewState={};
   await populateVscMru(sharedModel);
   saveModel(sharedModel);
   vscode.window.showInformationMessage('Model reset. Please close and reopen landingpage view.');
@@ -291,7 +292,7 @@ export async function handleMessageFromWebview(message:MessageFromWebview,webvie
         saveModel(sharedModel);
       }
       break;
-    case 'patch':
+    case 'patch': // {guid: item to patch, field: field to patch('shade' or 'layout'), value: new value}
       let found = findFirst(message.guid,sharedModel);
       if (!found) {vscode.window.showWarningMessage(`GroupOrProject not found: ${message.guid}`);return;}
       if (message.field==='shade')
@@ -309,9 +310,17 @@ export async function handleMessageFromWebview(message:MessageFromWebview,webvie
         console.warn(`Patch field not supported for key ${message.field}.`);
       }
       break;
+    case 'setViewState':
+      if (!sharedModel.viewState) {sharedModel.viewState={};}
+      if(message.field)
+      {
+        sharedModel.viewState[message.field]=message.value; // just store generic key-value pair 
+        saveModel(sharedModel);
+      }
+      break;
     case 'openSettings':
       vscode.commands.executeCommand('workbench.action.openSettings', 'vsc-landingpage');
-      break;
+      break;      
     default:
       console.log('Unhandled message from webview: ',message);
       // vscode.window.showWarningMessage(`got unknown msg: ${JSON.stringify(message)}`);

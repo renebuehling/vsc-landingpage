@@ -10,6 +10,8 @@ All notable changes to the "vsc-landingpage" extension will be documented in thi
 
 - Long label texts are now clipped also for card layouts, no more overlapping.
 - CSS shade variables are now declared for prototype elements (internal/tech fix, no visible changes for users).
+- Cursor images are now loaded from root assets path.
+
 
 
 ## [0.0.3] - 2026-04-04

@@ -17,7 +17,7 @@ export class LandingPageTemplate2
 {
   /**
    * Generates the HTML source to be injected into the webview.
-   * @param assetPath Path of src/assets converted to Webview URL, see [Loading Local Content](https://code.visualstudio.com/api/extension-guides/webview#loading-local-content)
+   * @param assetPath Path of extension assets converted to Webview URL, see [Loading Local Content](https://code.visualstudio.com/api/extension-guides/webview#loading-local-content)
    * @returns HTML
    */
   public makeHTML(assetPath:vscode.Uri):string

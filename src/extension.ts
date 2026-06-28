@@ -76,8 +76,8 @@ export function activate(context: vscode.ExtensionContext)
 
 			landingpageWebviewPanel.iconPath = panelIconPath;
 
-			/** Webview-accessible path to src/assets which is for example required to load custom cursors.  */
-			const assetPath:vscode.Uri = landingpageWebviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'src','assets'));
+			/** Webview-accessible path to extension assets, required to load custom cursors. */
+			const assetPath:vscode.Uri = landingpageWebviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'assets'));
 
 			// const communication = new LandingPageCommunication();
 			// webviewPanel.onDidDispose(()=>{communication.dispose();});

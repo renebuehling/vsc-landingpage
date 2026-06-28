@@ -17,4 +17,5 @@ Use `vsce package`.
 
 - Updated Version number in package.json?
 - Updated CHANGELOG.md?
-- Call `vsce publish`
+- To build .vsix: `vsce package`
+- To build and push online: `vsce publish`

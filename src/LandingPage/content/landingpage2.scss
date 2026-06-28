@@ -11,6 +11,8 @@
   div[data-prototype] 
   {
     display: none !important;
+    --shade-color: fuchsia;
+    --shade-foreground: white;
   }
 
   user-select: none;

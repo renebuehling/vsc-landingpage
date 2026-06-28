@@ -2,14 +2,20 @@
   "name": "vsc-landingpage",
   "displayName": "Landingpage",
   "description": "Welcome page with customizable project bookmarks.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.96.0"
   },
   "categories": [
     "Other"
   ],
-  "keywords": ["start","welcome","bookmarks","projects","workbench"],
+  "keywords": [
+    "start",
+    "welcome",
+    "bookmarks",
+    "projects",
+    "workbench"
+  ],
   "publisher": "renebuehling",
   "icon": "assets/icon.png",
   "repository": {
@@ -17,7 +23,9 @@
     "url": "https://github.com/renebuehling/vsc-landingpage"
   },
   "pricing": "Free",
-  "activationEvents": ["*", "onStartupFinished" ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
@@ -40,11 +48,10 @@
         "command": "vsc-landingpage.focusInput",
         "key": "ctrl+f",
         "mac": "cmd+f",
-        "when": "activeWebviewPanelId == 'vsc-landingpage'" 
+        "when": "activeWebviewPanelId == 'vsc-landingpage'"
       }
     ],
-    "menus": 
-    {
+    "menus": {
       "editor/title": [
         {
           "command": "vsc-landingpage.reset",
@@ -53,21 +60,19 @@
         {
           "command": "vsc-landingpage.reload",
           "when": "activeWebviewPanelId == 'vsc-landingpage'"
-        }        
+        }
       ]
     },
     "commandPalette": [
-        {
-          "command": "vsc-landingpage.showWelcomePage",
-          "when": "true"
-        }
+      {
+        "command": "vsc-landingpage.showWelcomePage",
+        "when": "true"
+      }
     ],
-    "configuration": 
-    {
+    "configuration": {
       "title": "Landingpage",
       "properties": {
-        "vsc-landingpage.autoshowOnStartup": 
-        {
+        "vsc-landingpage.autoshowOnStartup": {
           "type": "boolean",
           "default": true,
           "description": "Open Landingpage automatically in empty windows."

@@ -4,6 +4,13 @@ All notable changes to the "vsc-landingpage" extension will be documented in thi
 
 <!-- Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file. -->
 
+## [0.0.4] - 2026-06
+
+### Fixed
+
+- Long label texts are now clipped also for card layouts, no more overlapping.
+
+
 ## [0.0.3] - 2026-04-04
 
 ### Added

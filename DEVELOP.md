@@ -6,7 +6,7 @@ See also [vsc-extension-quickstart](vsc-extension-quickstart.md)
 
 - To **debug/run**, start test instance with **F5**. 
 - Reload test instance to refresh plugin with **Ctrl+R**
-- Inspect test instance DOM with **Ctrl+R**
+- Inspect test instance DOM with **Ctrl+Shift+I**
 
 ## Build local .vsix file
 

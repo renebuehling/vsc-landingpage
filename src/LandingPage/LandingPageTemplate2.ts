@@ -4,7 +4,7 @@ import { icons } from './iconography';
 //@ts-ignore webpack loading syntax not recongized
 import landingpageHtml from '!!raw-loader!./content/landingpage2.html';
 //@ts-ignore webpack loading syntax not recongized
-import landingpageCss from '!!raw-loader!./content/dist/landingpage2.min.css';
+import landingpageCss from '!!raw-loader!./content/dist/landingpage2.css';
 
 //@ts-ignore webpack loading syntax not recongized
 import landingpageJs from '!!raw-loader!./content/landingpage2.js';
